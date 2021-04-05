@@ -105,6 +105,7 @@ demarrer()
 
 #########################################
 # définition des évènements
+
 racine.bind("<KeyPress-Up>", haut)
 racine.bind("<KeyPress-Down>", bas)
 racine.bind("<KeyPress-Right>", droite)
