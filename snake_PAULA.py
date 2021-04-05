@@ -28,7 +28,7 @@ COULEUR_QUADR = "grey60"
 
 #########################################
 # définition des variables globales
-dirrection = 0
+direction = 0
 serpent = 0
 #########################################
 # définition des fonctions
@@ -49,23 +49,23 @@ def quadrillage():
 #controle dirrection du sepent
 def haut(event):
     """change la dirrection du serpent"""
-    global dirrection
-    dirrection = "haut"
+    global direction
+    direction = "haut"
 
 def bas(event):
     """change la dirrection du serpent"""
-    global dirrection
-    dirrection = "bas"
+    global direction
+    direction = "bas"
 
 def droite(event):
     """change la dirrection du serpent"""
-    global dirrection
-    dirrection = "droite"
+    global direction
+    direction = "droite"
 
 def gauche(event):
     """change la dirrection du serpent"""
-    global dirrection
-    dirrection = "gauche"
+    global direction
+    direction = "gauche"
 
 
 #debut du programme
@@ -77,18 +77,18 @@ def demarrer():
 
 def mouvement():
     """fonction qui fait bouger le serpent"""
-    if dirrection == 0 :
+    if direction == 0 :
         pass
-    elif dirrection == "haut" :
+    elif direction == "haut" :
         TERRAIN.move(serpent, 0, -30)
-    elif dirrection == "bas" :
+    elif direction == "bas" :
         TERRAIN.move(serpent, 0, 30)
-    elif dirrection == "droite" :
+    elif direction == "droite" :
         TERRAIN.move(serpent, 30, 0)
-    elif dirrection == "gauche" :
+    elif direction == "gauche" :
         TERRAIN.move(serpent, -30, 0)
 
-    id_after = TERRAIN.after(1000, mouvement)   
+    id_after = TERRAIN.after(750, mouvement)   
 
 
 #########################################
