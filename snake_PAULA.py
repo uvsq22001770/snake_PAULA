@@ -24,8 +24,6 @@ LARGEUR = 600
 HAUTEUR = 420
 COULEUR_QUADR = "grey60"
 
-
-
 #########################################
 # définition des variables globales
 direction = 0
@@ -101,6 +99,7 @@ TERRAIN.grid()
 
 quadrillage()
 demarrer()
+
 #########################################
 # définition des widgets
 
