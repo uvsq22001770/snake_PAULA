@@ -9,7 +9,6 @@
 # https://github.com/uvsq22001770/Projet_2.git
 #########################################
 
-#########################################
 # import des librairies
 
 import tkinter as tk
