@@ -45,22 +45,22 @@ def quadrillage():
 
 #controle dirrection du sepent
 def haut(event):
-    """change la dirrection du serpent"""
+    """change la direction du serpent"""
     global direction
     direction = "haut"
 
 def bas(event):
-    """change la dirrection du serpent"""
+    """change la direction du serpent"""
     global direction
     direction = "bas"
 
 def droite(event):
-    """change la dirrection du serpent"""
+    """change la direction du serpent"""
     global direction
     direction = "droite"
 
 def gauche(event):
-    """change la dirrection du serpent"""
+    """change la direction du serpent"""
     global direction
     direction = "gauche"
 
