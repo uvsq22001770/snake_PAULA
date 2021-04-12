@@ -27,6 +27,7 @@ COULEUR_QUADR = "grey60"
 # définition des variables globales
 direction = 0
 serpent = 0
+pomme = []
 #########################################
 # définition des fonctions
 # docstring pour chaque fonction
@@ -43,7 +44,15 @@ def quadrillage():
         x += coté
 
 
-#controle dirrection du sepent
+def creer_pomme():
+    global pomme
+    i=rd.randint(0, 19) 
+    j=rd.randint(0, 14)
+    pomme.append((i, j))
+    pomme = pomme.append(TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red"))
+    return pomme
+
+#controle direction du sepent
 def haut(event):
     """change la direction du serpent"""
     global direction
@@ -98,6 +107,7 @@ TERRAIN.grid()
 
 quadrillage()
 demarrer()
+creer_pomme()
 
 #########################################
 # définition des widgets
