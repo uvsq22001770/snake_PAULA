@@ -28,6 +28,8 @@ COULEUR_QUADR = "grey60"
 direction = 0
 serpent = 0
 pomme = []
+coordonnees_mur = []
+
 #########################################
 # définition des fonctions
 # docstring pour chaque fonction
@@ -51,6 +53,22 @@ def creer_pomme():
     pomme.append((i, j))
     pomme.append(TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red"))
     return pomme
+
+def fonction_mur():
+    for i in range(1,19):
+        TERRAIN.create_rectangle(i*30,0,(i+1)*30,30,fill='#814436')
+        HAUT=[i,0]
+        TERRAIN.create_rectangle(i*30,390,(i+1)*30,420,fill='#814436')
+        BAS=[i,13]
+        coordonnees_mur.append(HAUT)
+        coordonnees_mur.append(BAS)
+    for j in range(14):
+        TERRAIN.create_rectangle(0,j*30,30,(j+1)*30,fill='#814436')
+        GAUCHE=[0,j]
+        TERRAIN.create_rectangle(570,j*30,600,(j+1)*30,fill='#814436')
+        DROITE=[19,j]
+        coordonnees_mur.append(GAUCHE)
+        coordonnees_mur.append(DROITE)
 
 
 #controle direction du sepent
