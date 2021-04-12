@@ -49,8 +49,9 @@ def creer_pomme():
     i=rd.randint(0, 19) 
     j=rd.randint(0, 14)
     pomme.append((i, j))
-    pomme = pomme.append(TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red"))
+    pomme.append(TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red"))
     return pomme
+
 
 #controle direction du sepent
 def haut(event):
