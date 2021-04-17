@@ -26,7 +26,7 @@ COULEUR_QUADR = "grey60"
 #########################################
 # définition des variables globales
 direction = 0
-serpent = 0
+serpent = []
 pomme = []
 coordonnees_mur = []
 
@@ -48,8 +48,8 @@ def quadrillage():
 
 def creer_pomme():
     global pomme
-    i=rd.randint(0, 19) 
-    j=rd.randint(0, 14)
+    i=rd.randint(1, 18) 
+    j=rd.randint(1, 13)
     pomme.append((i, j))
     pomme.append(TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red"))
     return pomme
@@ -75,45 +75,82 @@ def fonction_mur():
 def haut(event):
     """change la direction du serpent"""
     global direction
-    direction = "haut"
+    if direction != "bas":
+        direction = "haut"
 
 def bas(event):
     """change la direction du serpent"""
     global direction
-    direction = "bas"
+    if direction != "haut":
+        direction = "bas"
 
 def droite(event):
     """change la direction du serpent"""
     global direction
-    direction = "droite"
+    if direction != "gauche":
+        direction = "droite"
 
 def gauche(event):
     """change la direction du serpent"""
     global direction
-    direction = "gauche"
+    if direction != "droite":
+        direction = "gauche"
 
 
 #debut du programme
 def demarrer():
     """fonction qui commence le jeu avec un serpent au milieu"""   
     global serpent
-    serpent = TERRAIN.create_oval(300, 210, 330, 240, fill = "green")  
+    serpent.extend(
+    [[(10,7),TERRAIN.create_oval(300, 210, 330, 240, fill = "green")],
+    [(10,7),TERRAIN.create_oval(300, 210, 330, 240, fill = "green")],
+    [(10,7),TERRAIN.create_oval(300, 210, 330, 240, fill = "green")]]
+    )  
     mouvement()
+
+def etape_mouvement(i,j):
+    if direction == 0 :
+        pass
+
+    elif direction == "haut" :
+        #TERRAIN.move(serpent[-1][1], 0, -30)
+        serpent.append([(i,j-1),
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+
+        TERRAIN.delete(serpent[0][1])
+        del serpent[0]
+
+    elif direction == "bas" :
+        #TERRAIN.move(serpent[-1][1], 0, 30)
+        serpent.append([(i,j+1),
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+
+        TERRAIN.delete(serpent[0][1])
+        del serpent[0]
+
+    elif direction == "droite" :
+        #TERRAIN.move(serpent[-1][1], 30, 0)
+        serpent.append([(i+1,j),
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+
+        TERRAIN.delete(serpent[0][1])
+        del serpent[0]
+
+    elif direction == "gauche" :
+        #TERRAIN.move(serpent[-1][1], -30, 0)
+        serpent.append([(i-1,j),
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+        
+        TERRAIN.delete(serpent[0][1])
+        del serpent[0]
 
 def mouvement():
     """fonction qui fait bouger le serpent"""
-    if direction == 0 :
-        pass
-    elif direction == "haut" :
-        TERRAIN.move(serpent, 0, -30)
-    elif direction == "bas" :
-        TERRAIN.move(serpent, 0, 30)
-    elif direction == "droite" :
-        TERRAIN.move(serpent, 30, 0)
-    elif direction == "gauche" :
-        TERRAIN.move(serpent, -30, 0)
+    #if case de devant est vide ou pomme:
+    (i,j) = serpent[-1][0]
+    etape_mouvement(i,j)
 
-    id_after = TERRAIN.after(750, mouvement)   
+    id_after = TERRAIN.after(750, mouvement)
 
 
 #########################################
@@ -127,6 +164,7 @@ TERRAIN.grid()
 quadrillage()
 demarrer()
 creer_pomme()
+fonction_mur()
 
 #########################################
 # définition des widgets
