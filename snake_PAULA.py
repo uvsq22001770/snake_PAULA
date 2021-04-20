@@ -57,21 +57,19 @@ def creer_pomme():
 def fonction_mur():
     for i in range(1,19):
         TERRAIN.create_rectangle(i*30,0,(i+1)*30,30,fill='#814436')
-        HAUT=[i,0]
         TERRAIN.create_rectangle(i*30,390,(i+1)*30,420,fill='#814436')
-        BAS=[i,13]
-        coordonnees_mur.append(HAUT)
-        coordonnees_mur.append(BAS)
+        coordonnees_mur.append((i,0))
+        coordonnees_mur.append((i,13))
     for j in range(14):
         TERRAIN.create_rectangle(0,j*30,30,(j+1)*30,fill='#814436')
-        GAUCHE=[0,j]
         TERRAIN.create_rectangle(570,j*30,600,(j+1)*30,fill='#814436')
-        DROITE=[19,j]
-        coordonnees_mur.append(GAUCHE)
-        coordonnees_mur.append(DROITE)
+        coordonnees_mur.append((0,j))
+        coordonnees_mur.append((19,j))
 
 
-#controle direction du sepent
+
+
+#controle direction du serpent
 def haut(event):
     """change la direction du serpent"""
     global direction
@@ -107,6 +105,7 @@ def demarrer():
     [(10,7),TERRAIN.create_oval(300, 210, 330, 240, fill = "green")]]
     )  
     mouvement()
+    
 
 def etape_mouvement(i,j):
     if direction == 0 :
@@ -147,10 +146,18 @@ def etape_mouvement(i,j):
 def mouvement():
     """fonction qui fait bouger le serpent"""
     #if case de devant est vide ou pomme:
+    global id_after
     (i,j) = serpent[-1][0]
     etape_mouvement(i,j)
+    if serpent[2][0] in coordonnees_mur:
+        id_after=TERRAIN.after(1,None)
+    else:
+        id_after = TERRAIN.after(750, mouvement)
+    
 
-    id_after = TERRAIN.after(750, mouvement)
+    
+    
+
 
 
 #########################################
