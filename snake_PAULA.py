@@ -46,13 +46,16 @@ def quadrillage():
         x += coté
 
 
-def creer_pomme():
+def creer_premiere_pomme():
     global pomme
+    global POMME
     i=rd.randint(1,18)
     j=rd.randint(1,12)
-    pomme.append((i, j))
-    pomme.append(TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red"))
-    return pomme
+    if (i,j) in serpent:
+        creer_premiere_pomme()
+    else:
+        pomme.append((i, j))
+        POMME=TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red")
 
 def fonction_mur():
     for i in range(1,19):
@@ -65,6 +68,18 @@ def fonction_mur():
         TERRAIN.create_rectangle(570,j*30,600,(j+1)*30,fill='#814436')
         coordonnees_mur.append((0,j))
         coordonnees_mur.append((19,j))
+
+def creer_pommes():
+    global POMME
+    i=rd.randint(1,18)
+    j=rd.randint(1,12)
+    if (i,j) in serpent:
+        creer_pommes()
+    else:
+        pomme.append((i,j))
+        TERRAIN.delete(POMME)
+        POMME=TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red")
+
 
 
 
@@ -151,6 +166,10 @@ def mouvement():
     etape_mouvement(i,j)
     if serpent[2][0] in coordonnees_mur:
         id_after=TERRAIN.after(1,None)
+    elif serpent[1][0] in pomme:
+        del(pomme[0]) 
+        creer_pommes()
+        id_after = TERRAIN.after(750,mouvement)
     else:
         id_after = TERRAIN.after(750, mouvement)
     
@@ -170,7 +189,7 @@ TERRAIN.grid()
 
 quadrillage()
 demarrer()
-creer_pomme()
+creer_premiere_pomme()
 fonction_mur()
 
 #########################################
