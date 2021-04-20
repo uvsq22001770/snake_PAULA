@@ -48,8 +48,8 @@ def quadrillage():
 
 def creer_pomme():
     global pomme
-    i=rd.randint(1, 18) 
-    j=rd.randint(1, 13)
+    i=rd.randint(1,18)
+    j=rd.randint(1,12)
     pomme.append((i, j))
     pomme.append(TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red"))
     return pomme
