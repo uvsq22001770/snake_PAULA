@@ -29,6 +29,7 @@ direction = 0
 serpent = []
 pomme = []
 coordonnees_mur = []
+coordonnees_serpent =[]
 
 #########################################
 # définition des fonctions
@@ -73,13 +74,54 @@ def creer_pommes():
     global POMME
     i=rd.randint(1,18)
     j=rd.randint(1,12)
-    if (i,j) in serpent:
+    if (i,j) in coordonnees_serpent:
+        print("serpent")
+        creer_pommes()
+    elif (i,j)==pomme[0]:
+        print('pomme')
         creer_pommes()
     else:
+        del(pomme[0])
         pomme.append((i,j))
         TERRAIN.delete(POMME)
         POMME=TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red")
+        print('okay')
 
+def aggrandir_serpent():
+    (i,j)=serpent[0][0]
+    if direction==0 :
+        pass
+
+    elif direction == "haut" :
+        #TERRAIN.move(serpent[-1][1], 0, -30)
+        serpent.insert(0,[(i,j-1),
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+        coordonnees_serpent.insert(0,(i,j-1))
+        print(coordonnees_serpent)
+
+
+    elif direction == "bas" :
+        #TERRAIN.move(serpent[-1][1], 0, 30)
+        serpent.insert(0,[(i,j+1),
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+        coordonnees_serpent.insert(0,(i,j+1))
+        print(coordonnees_serpent)
+
+
+
+    elif direction == "droite" :
+        #TERRAIN.move(serpent[-1][1], 30, 0)
+        serpent.insert(0,[(i+1,j),
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+        coordonnees_serpent.insert(0,(i+1,j))
+        print(coordonnees_serpent)
+
+    elif direction == "gauche" :
+        #TERRAIN.move(serpent[-1][1], -30, 0)
+        serpent.insert(0,[(i-1,j),
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+        coordonnees_serpent.insert(0,(i-1,j))
+        print(coordonnees_serpent)
 
 
 
@@ -114,11 +156,14 @@ def gauche(event):
 def demarrer():
     """fonction qui commence le jeu avec un serpent au milieu"""   
     global serpent
+    global coordonnees_serpent
     serpent.extend(
     [[(10,7),TERRAIN.create_oval(300, 210, 330, 240, fill = "green")],
     [(10,7),TERRAIN.create_oval(300, 210, 330, 240, fill = "green")],
     [(10,7),TERRAIN.create_oval(300, 210, 330, 240, fill = "green")]]
     )  
+    coordonnees_serpent=[(10,7),(10,7),(10,7)]
+    print(coordonnees_serpent)
     mouvement()
     
 
@@ -133,6 +178,10 @@ def etape_mouvement(i,j):
 
         TERRAIN.delete(serpent[0][1])
         del serpent[0]
+        coordonnees_serpent.append((i,j-1))
+        del coordonnees_serpent[0]
+        print(coordonnees_serpent)
+
 
     elif direction == "bas" :
         #TERRAIN.move(serpent[-1][1], 0, 30)
@@ -141,6 +190,10 @@ def etape_mouvement(i,j):
 
         TERRAIN.delete(serpent[0][1])
         del serpent[0]
+        coordonnees_serpent.append((i,j+1))
+        del coordonnees_serpent[0]
+        print(coordonnees_serpent)
+
 
     elif direction == "droite" :
         #TERRAIN.move(serpent[-1][1], 30, 0)
@@ -149,6 +202,10 @@ def etape_mouvement(i,j):
 
         TERRAIN.delete(serpent[0][1])
         del serpent[0]
+        coordonnees_serpent.append((i+1,j))
+        del coordonnees_serpent[0]
+        print(coordonnees_serpent)
+
 
     elif direction == "gauche" :
         #TERRAIN.move(serpent[-1][1], -30, 0)
@@ -157,6 +214,10 @@ def etape_mouvement(i,j):
         
         TERRAIN.delete(serpent[0][1])
         del serpent[0]
+        coordonnees_serpent.append((i-1,j))
+        del coordonnees_serpent[0]
+        print(coordonnees_serpent)
+
 
 def mouvement():
     """fonction qui fait bouger le serpent"""
@@ -164,14 +225,14 @@ def mouvement():
     global id_after
     (i,j) = serpent[-1][0]
     etape_mouvement(i,j)
-    if serpent[2][0] in coordonnees_mur:
+    if serpent[-1][0] in coordonnees_mur:
         id_after=TERRAIN.after(1,None)
-    elif serpent[1][0] in pomme:
-        del(pomme[0]) 
+    elif serpent[-2][0] in pomme:
+        aggrandir_serpent()
         creer_pommes()
-        id_after = TERRAIN.after(750,mouvement)
+        id_after = TERRAIN.after(900,mouvement)
     else:
-        id_after = TERRAIN.after(750, mouvement)
+        id_after = TERRAIN.after(900, mouvement)
     
 
     
