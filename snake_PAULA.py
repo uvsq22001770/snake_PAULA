@@ -77,13 +77,13 @@ def creer_pommes():
     global POMME
     i=rd.randint(1,18)
     j=rd.randint(1,12)
-
+    
+    #la pomme ne peut apparaître sur le corps du serpent
     if (i,j) in coordonnees_serpent:
-        """elle ne peut apparaître là où il y a le corps du serpent"""
         creer_pommes()
-
-    if (i,j) == pomme[0]:
-        """elle ne peut apparaître là où elle vient de disparaître"""
+    
+    #la pomme ne peut apparaître là où elle a disparu
+    elif (i,j) == pomme[0]:
         creer_pommes()
 
     else:
@@ -100,27 +100,23 @@ def aggrandir_serpent():
         pass
 
     elif direction == "haut" :
-        #TERRAIN.move(serpent[-1][1], 0, -30)
         serpent.insert(0,[(i,j-1),
         TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
         coordonnees_serpent.insert(0,(i,j-1))
 
 
     elif direction == "bas" :
-        #TERRAIN.move(serpent[-1][1], 0, 30)
         serpent.insert(0,[(i,j+1),
         TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
         coordonnees_serpent.insert(0,(i,j+1))
 
 
     elif direction == "droite" :
-        #TERRAIN.move(serpent[-1][1], 30, 0)
         serpent.insert(0,[(i+1,j),
         TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
         coordonnees_serpent.insert(0,(i+1,j))
 
     elif direction == "gauche" :
-        #TERRAIN.move(serpent[-1][1], -30, 0)
         serpent.insert(0,[(i-1,j),
         TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
         coordonnees_serpent.insert(0,(i-1,j))
@@ -218,22 +214,23 @@ def etape_mouvement(i,j):
 
 def mouvement():
     """fonction qui fait bouger le serpent"""
-    #if case de devant est vide ou pomme:
     global id_after
     (i,j) = serpent[-1][0]
     etape_mouvement(i,j) 
 
+    #le serpent s'arrête lorsqu'il touche le mur
     if serpent[-1][0] in coordonnees_mur:
-        """le serpent a touché un mur, il arrête de bouger"""
         id_after=TERRAIN.after(1,None)
     
-    if serpent[-2][0] in pomme:
-        """le serpent a touché une pomme, son corps s'aggrandit et il continue son chemin"""
+    #le serpent s'aggrandit quand il touche une pomme
+    elif serpent[-2][0] in pomme:
         aggrandir_serpent()
         creer_pommes()
-        id_after = TERRAIN.after(750,mouvement)
+        id_after = TERRAIN.after(300,mouvement)
+
+    #if case de devant est vide
     else:
-        id_after = TERRAIN.after(750, mouvement)
+        id_after = TERRAIN.after(300, mouvement)
     
 
     
