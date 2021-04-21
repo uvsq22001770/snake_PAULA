@@ -48,6 +48,7 @@ def quadrillage():
 
 
 def creer_premiere_pomme():
+    '''creation de la premiere pomme du terrain'''
     global pomme
     global POMME
     i=rd.randint(1,18)
@@ -59,6 +60,7 @@ def creer_premiere_pomme():
         POMME=TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red")
 
 def fonction_mur():
+    '''creation des murs qui encadrent le terrain, le serpent ne peut pas les toucher'''
     for i in range(1,19):
         TERRAIN.create_rectangle(i*30,0,(i+1)*30,30,fill='#814436')
         TERRAIN.create_rectangle(i*30,390,(i+1)*30,420,fill='#814436')
@@ -71,23 +73,24 @@ def fonction_mur():
         coordonnees_mur.append((19,j))
 
 def creer_pommes():
+    '''creation de pommes une fois que le serpent a mangé la première'''
     global POMME
     i=rd.randint(1,18)
     j=rd.randint(1,12)
+    '''elle ne peut pas apparaître là où il y a le corps du serpent'''
     if (i,j) in coordonnees_serpent:
-        print("serpent")
         creer_pommes()
+    '''elles ne peut pas apparaître là où elle vient de disparaître'''
     elif (i,j)==pomme[0]:
-        print('pomme')
         creer_pommes()
     else:
         del(pomme[0])
         pomme.append((i,j))
         TERRAIN.delete(POMME)
         POMME=TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red")
-        print('okay')
 
 def aggrandir_serpent():
+    '''le corps du serpent s'aggrandit d'une boule'''
     (i,j)=serpent[0][0]
     if direction==0 :
         pass
@@ -97,7 +100,6 @@ def aggrandir_serpent():
         serpent.insert(0,[(i,j-1),
         TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
         coordonnees_serpent.insert(0,(i,j-1))
-        print(coordonnees_serpent)
 
 
     elif direction == "bas" :
@@ -105,8 +107,6 @@ def aggrandir_serpent():
         serpent.insert(0,[(i,j+1),
         TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
         coordonnees_serpent.insert(0,(i,j+1))
-        print(coordonnees_serpent)
-
 
 
     elif direction == "droite" :
@@ -114,14 +114,12 @@ def aggrandir_serpent():
         serpent.insert(0,[(i+1,j),
         TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
         coordonnees_serpent.insert(0,(i+1,j))
-        print(coordonnees_serpent)
 
     elif direction == "gauche" :
         #TERRAIN.move(serpent[-1][1], -30, 0)
         serpent.insert(0,[(i-1,j),
         TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
         coordonnees_serpent.insert(0,(i-1,j))
-        print(coordonnees_serpent)
 
 
 
@@ -163,7 +161,6 @@ def demarrer():
     [(10,7),TERRAIN.create_oval(300, 210, 330, 240, fill = "green")]]
     )  
     coordonnees_serpent=[(10,7),(10,7),(10,7)]
-    print(coordonnees_serpent)
     mouvement()
     
 
@@ -180,7 +177,6 @@ def etape_mouvement(i,j):
         del serpent[0]
         coordonnees_serpent.append((i,j-1))
         del coordonnees_serpent[0]
-        print(coordonnees_serpent)
 
 
     elif direction == "bas" :
@@ -192,7 +188,6 @@ def etape_mouvement(i,j):
         del serpent[0]
         coordonnees_serpent.append((i,j+1))
         del coordonnees_serpent[0]
-        print(coordonnees_serpent)
 
 
     elif direction == "droite" :
@@ -204,7 +199,6 @@ def etape_mouvement(i,j):
         del serpent[0]
         coordonnees_serpent.append((i+1,j))
         del coordonnees_serpent[0]
-        print(coordonnees_serpent)
 
 
     elif direction == "gauche" :
@@ -216,7 +210,6 @@ def etape_mouvement(i,j):
         del serpent[0]
         coordonnees_serpent.append((i-1,j))
         del coordonnees_serpent[0]
-        print(coordonnees_serpent)
 
 
 def mouvement():
@@ -225,14 +218,16 @@ def mouvement():
     global id_after
     (i,j) = serpent[-1][0]
     etape_mouvement(i,j)
+    '''le serpent a touché un mur, il arrête de bouger'''
     if serpent[-1][0] in coordonnees_mur:
         id_after=TERRAIN.after(1,None)
+    '''le serpent a touché une pomme, son corps s'aggrandit et il continue son chemin'''
     elif serpent[-2][0] in pomme:
         aggrandir_serpent()
         creer_pommes()
-        id_after = TERRAIN.after(900,mouvement)
+        id_after = TERRAIN.after(750,mouvement)
     else:
-        id_after = TERRAIN.after(900, mouvement)
+        id_after = TERRAIN.after(750, mouvement)
     
 
     
