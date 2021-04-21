@@ -48,7 +48,7 @@ def quadrillage():
 
  
 def creer_premiere_pomme():
-    '''creation de la premiere pomme du terrain'''
+    """creation de la premiere pomme du terrain"""
     global pomme
     global POMME
     i=rd.randint(1,18)
@@ -60,7 +60,7 @@ def creer_premiere_pomme():
         POMME=TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red")
 
 def fonction_mur():
-    '''creation des murs qui encadrent le terrain, le serpent ne peut pas les toucher'''
+    """creation des murs qui encadrent le terrain"""
     for i in range(1,19):
         TERRAIN.create_rectangle(i*30,0,(i+1)*30,30,fill='#814436')
         TERRAIN.create_rectangle(i*30,390,(i+1)*30,420,fill='#814436')
@@ -73,16 +73,19 @@ def fonction_mur():
         coordonnees_mur.append((19,j))
 
 def creer_pommes():
-    '''creation de pommes une fois que le serpent a mangé la première'''
+    """creation de pommes une fois que le serpent a mangé la première"""
     global POMME
     i=rd.randint(1,18)
     j=rd.randint(1,12)
-    '''elle ne peut pas apparaître là où il y a le corps du serpent'''
+
     if (i,j) in coordonnees_serpent:
+        """elle ne peut apparaître là où il y a le corps du serpent"""
         creer_pommes()
-    '''elles ne peut pas apparaître là où elle vient de disparaître'''
-    elif (i,j)==pomme[0]:
+
+    if (i,j) == pomme[0]:
+        """elle ne peut apparaître là où elle vient de disparaître"""
         creer_pommes()
+
     else:
         del(pomme[0])
         pomme.append((i,j))
@@ -90,8 +93,9 @@ def creer_pommes():
         POMME=TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red")
 
 def aggrandir_serpent():
-    '''le corps du serpent s'aggrandit d'une boule'''
+    """le corps du serpent s'aggrandit d'une boule"""
     (i,j)=serpent[0][0]
+    
     if direction==0 :
         pass
 
@@ -217,12 +221,14 @@ def mouvement():
     #if case de devant est vide ou pomme:
     global id_after
     (i,j) = serpent[-1][0]
-    etape_mouvement(i,j)
-    '''le serpent a touché un mur, il arrête de bouger'''
+    etape_mouvement(i,j) 
+
     if serpent[-1][0] in coordonnees_mur:
+        """le serpent a touché un mur, il arrête de bouger"""
         id_after=TERRAIN.after(1,None)
-    '''le serpent a touché une pomme, son corps s'aggrandit et il continue son chemin'''
-    elif serpent[-2][0] in pomme:
+    
+    if serpent[-2][0] in pomme:
+        """le serpent a touché une pomme, son corps s'aggrandit et il continue son chemin"""
         aggrandir_serpent()
         creer_pommes()
         id_after = TERRAIN.after(750,mouvement)
