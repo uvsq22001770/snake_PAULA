@@ -46,7 +46,7 @@ def quadrillage():
         TERRAIN.create_line((x, 0), (x, HAUTEUR), fill=COULEUR_QUADR)
         x += coté
 
-
+ 
 def creer_premiere_pomme():
     '''creation de la premiere pomme du terrain'''
     global pomme
