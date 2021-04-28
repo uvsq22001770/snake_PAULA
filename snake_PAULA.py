@@ -98,7 +98,6 @@ def aggrandir_serpent():
         serpent.insert(0,[(i,j+1),
         TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
         coordonnees_serpent.insert(0,(i,j+1))
-<<<<<<< HEAD
 
 
     elif direction == "droite" :
@@ -112,23 +111,6 @@ def aggrandir_serpent():
         coordonnees_serpent.insert(0,(i-1,j))
 
 
-=======
-
-
-    elif direction == "droite" :
-        serpent.insert(0,[(i+1,j),
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
-        coordonnees_serpent.insert(0,(i+1,j))
-
-    elif direction == "gauche" :
-        serpent.insert(0,[(i-1,j),
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
-        coordonnees_serpent.insert(0,(i-1,j))
-
-
-
-
->>>>>>> 3ec97ebe4f1671d2980b325d7a5cafb121091133
 #controle direction du serpent
 def haut(event):
     """change la direction du serpent"""
@@ -215,34 +197,6 @@ def etape_mouvement(i,j):
         del serpent[0]
         coordonnees_serpent.append((i-1,j))
         del coordonnees_serpent[0]
-<<<<<<< HEAD
-=======
-
-
-def mouvement():
-    """fonction qui fait bouger le serpent"""
-    global id_after
-    (i,j) = serpent[-1][0]
-    etape_mouvement(i,j) 
-
-    #le serpent s'arrête lorsqu'il touche le mur
-    if serpent[-1][0] in coordonnees_mur:
-        id_after=TERRAIN.after(1,None)
-    
-    #le serpent s'aggrandit quand il touche une pomme
-    elif serpent[-2][0] in pomme:
-        aggrandir_serpent()
-        creer_pommes()
-        id_after = TERRAIN.after(300,mouvement)
-
-    #if case de devant est vide
-    else:
-        id_after = TERRAIN.after(300, mouvement)
-    
-
-    
-    
->>>>>>> 3ec97ebe4f1671d2980b325d7a5cafb121091133
 
 
 def mouvement():
@@ -267,15 +221,8 @@ def mouvement():
 
 
 
-<<<<<<< HEAD
 #############################################################################
 #############################################################################
-=======
-quadrillage()
-demarrer()
-creer_premiere_pomme()
-fonction_mur()
->>>>>>> 3ec97ebe4f1671d2980b325d7a5cafb121091133
 
 def comment_jouer():
     fenetre = tk.Toplevel(root)
