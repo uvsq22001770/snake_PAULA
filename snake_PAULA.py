@@ -15,6 +15,7 @@ COULEUR_QUADR = "grey60"
 #########################################
 # définition des variables globales
 direction = 0
+score = 0
 serpent = []
 pomme = []
 coordonnees_mur = []
@@ -22,8 +23,9 @@ coordonnees_serpent =[]
 
 #########################################
 # définition des fonctions
-# docstring pour chaque fonction
 
+
+#fonction quadrillage qui doit disparaitre
 def quadrillage():
     """ATTENTION le quadrillage doit disparaitre pour le rendu final"""
     y = 0
@@ -36,17 +38,26 @@ def quadrillage():
         x += coté
 
  
+#################################################################################
+# debut du snake- pomme - murs - serpent#
+#################################################################################
+
 def creer_premiere_pomme():
     """creation de la premiere pomme du terrain"""
     global pomme
     global POMME
+
     i=rd.randint(1,18)
     j=rd.randint(1,12)
+    
+    #la pomme ne peut pas apparaitre dans le serpent
     if (i,j) in serpent:
         creer_premiere_pomme()
+    
     else:
         pomme.append((i, j))
         POMME=TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red")
+
 
 def fonction_mur():
     """creation des murs qui encadrent le terrain"""
@@ -60,6 +71,134 @@ def fonction_mur():
         TERRAIN.create_rectangle(570,j*30,600,(j+1)*30,fill='#814436')
         coordonnees_mur.append((0,j))
         coordonnees_mur.append((19,j))
+
+
+def demarrer():
+    """fonction qui commence le jeu avec un serpent au milieu"""   
+    global serpent
+    global coordonnees_serpent
+
+    serpent.extend(
+    [[(10,7),TERRAIN.create_oval(300, 210, 330, 240, fill = "green")],
+    [(10,7),TERRAIN.create_oval(300, 210, 330, 240, fill = "green")],
+    [(10,7),TERRAIN.create_oval(300, 210, 330, 240, fill = "green")]]
+    )  
+    coordonnees_serpent=[(10,7),(10,7),(10,7)]
+    mouvement()
+
+
+#################################################################################
+# mouvement du serpent - boucle after
+#################################################################################
+
+
+#controle direction du serpent
+def haut(event):
+    """change la direction du serpent"""
+    global direction
+    if direction != "bas":
+        direction = "haut"
+
+def bas(event):
+    """change la direction du serpent"""
+    global direction
+    if direction != "haut":
+        direction = "bas"
+
+def droite(event):
+    """change la direction du serpent"""
+    global direction
+    if direction != "gauche":
+        direction = "droite"
+
+def gauche(event):
+    """change la direction du serpent"""
+    global direction
+    if direction != "droite":
+        direction = "gauche"
+
+
+
+def etape_mouvement(i,j):
+    """fonction qui fait bouger le serpent d une case dans la direction indiquée"""
+    if direction == 0 :
+        pass
+
+    elif direction == "haut" :
+        serpent.append([(i,j-1),
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+
+        TERRAIN.delete(serpent[0][1])
+        del serpent[0]
+        coordonnees_serpent.append((i,j-1))
+        del coordonnees_serpent[0]
+
+
+    elif direction == "bas" :
+        serpent.append([(i,j+1),
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+
+        TERRAIN.delete(serpent[0][1])
+        del serpent[0]
+        coordonnees_serpent.append((i,j+1))
+        del coordonnees_serpent[0]
+
+
+    elif direction == "droite" :
+        serpent.append([(i+1,j),
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+
+        TERRAIN.delete(serpent[0][1])
+        del serpent[0]
+        coordonnees_serpent.append((i+1,j))
+        del coordonnees_serpent[0]
+
+
+    elif direction == "gauche" :
+        serpent.append([(i-1,j),
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+        
+        TERRAIN.delete(serpent[0][1])
+        del serpent[0]
+        coordonnees_serpent.append((i-1,j))
+        del coordonnees_serpent[0]
+
+
+def mouvement():
+    """fonction qui fait bouger le serpent et fait le test en cas de victoire/defaite"""
+    global id_after
+    (i,j) = serpent[-1][0]
+    etape_mouvement(i,j) 
+
+    #le serpent s'arrête lorsqu'il touche le mur
+    if serpent[-1][0] in coordonnees_mur:
+        game_over()
+    
+    #le serpent s'aggrandit quand il touche une pomme
+    elif serpent[-2][0] in pomme:
+        aggrandir_serpent()
+        augmenter_score()
+        creer_pommes()
+        id_after = TERRAIN.after(300,mouvement)
+
+    #if case de devant est vide
+    else:
+        id_after = TERRAIN.after(300, mouvement)
+
+
+#################################################################################
+# snake mange une pomme - creer nouvelle pomme - agrandir snake - augmenter score
+#################################################################################
+
+def augmenter_score():
+    """augmente le score et change le texte indiquant le score"""
+    global label_score
+    global score
+
+    score += 1
+    print(score)
+    label_score.config(text= "score : " + str(score))
+    
 
 def creer_pommes():
     """creation de pommes une fois que le serpent a mangé la première"""
@@ -80,6 +219,8 @@ def creer_pommes():
         pomme.append((i,j))
         TERRAIN.delete(POMME)
         POMME=TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red")
+
+
 
 def aggrandir_serpent():
     """le corps du serpent s'aggrandit d'une boule"""
@@ -111,135 +252,66 @@ def aggrandir_serpent():
         coordonnees_serpent.insert(0,(i-1,j))
 
 
-#controle direction du serpent
-def haut(event):
-    """change la direction du serpent"""
-    global direction
-    if direction != "bas":
-        direction = "haut"
-
-def bas(event):
-    """change la direction du serpent"""
-    global direction
-    if direction != "haut":
-        direction = "bas"
-
-def droite(event):
-    """change la direction du serpent"""
-    global direction
-    if direction != "gauche":
-        direction = "droite"
-
-def gauche(event):
-    """change la direction du serpent"""
-    global direction
-    if direction != "droite":
-        direction = "gauche"
-
-
-#debut du programme
-def demarrer():
-    """fonction qui commence le jeu avec un serpent au milieu"""   
-    global serpent
-    global coordonnees_serpent
-    serpent.extend(
-    [[(10,7),TERRAIN.create_oval(300, 210, 330, 240, fill = "green")],
-    [(10,7),TERRAIN.create_oval(300, 210, 330, 240, fill = "green")],
-    [(10,7),TERRAIN.create_oval(300, 210, 330, 240, fill = "green")]]
-    )  
-    coordonnees_serpent=[(10,7),(10,7),(10,7)]
-    mouvement()
-    
-
-def etape_mouvement(i,j):
-    if direction == 0 :
-        pass
-
-    elif direction == "haut" :
-        #TERRAIN.move(serpent[-1][1], 0, -30)
-        serpent.append([(i,j-1),
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
-
-        TERRAIN.delete(serpent[0][1])
-        del serpent[0]
-        coordonnees_serpent.append((i,j-1))
-        del coordonnees_serpent[0]
-
-
-    elif direction == "bas" :
-        #TERRAIN.move(serpent[-1][1], 0, 30)
-        serpent.append([(i,j+1),
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
-
-        TERRAIN.delete(serpent[0][1])
-        del serpent[0]
-        coordonnees_serpent.append((i,j+1))
-        del coordonnees_serpent[0]
-
-
-    elif direction == "droite" :
-        #TERRAIN.move(serpent[-1][1], 30, 0)
-        serpent.append([(i+1,j),
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
-
-        TERRAIN.delete(serpent[0][1])
-        del serpent[0]
-        coordonnees_serpent.append((i+1,j))
-        del coordonnees_serpent[0]
-
-
-    elif direction == "gauche" :
-        #TERRAIN.move(serpent[-1][1], -30, 0)
-        serpent.append([(i-1,j),
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
-        
-        TERRAIN.delete(serpent[0][1])
-        del serpent[0]
-        coordonnees_serpent.append((i-1,j))
-        del coordonnees_serpent[0]
-
-
-def mouvement():
-    """fonction qui fait bouger le serpent"""
+#################################################################################
+# snake prends un mur - game over
+#################################################################################
+""" attention fonction pas finies"""
+def game_over():
     global id_after
-    (i,j) = serpent[-1][0]
-    etape_mouvement(i,j) 
-
-    #le serpent s'arrête lorsqu'il touche le mur
-    if serpent[-1][0] in coordonnees_mur:
-        id_after=TERRAIN.after(1,None)
+    global id_text
+    TERRAIN.after_cancel(id_after)
+    id_text = TERRAIN.create_text(300,200, text = "game over", fill = "red", font = "Helvetica")  
     
-    #le serpent s'aggrandit quand il touche une pomme
-    elif serpent[-2][0] in pomme:
-        aggrandir_serpent()
-        creer_pommes()
-        id_after = TERRAIN.after(300,mouvement)
+    TERRAIN.after(1000, lambda : transition_vers_menu())
 
-    #if case de devant est vide
-    else:
-        id_after = TERRAIN.after(300, mouvement)
+
+def transition_vers_menu():
+    global id_text
+    TERRAIN.delete(id_text)
 
 
 
-#############################################################################
-#############################################################################
+#################################################################################
+#################################################################################
+# fonctions du menu 
+#################################################################################
+#################################################################################
+
+
 
 def comment_jouer():
     fenetre = tk.Toplevel(root)
     fenetre.title("Les débuts")
 
+
+def scores():
+    f = tk.Toplevel(root)
+    f.title("Tableau des scores")
+    label_1 = tk.Label(f, text="nom    10", font=("Helvetica", "28"), bg="dark green", fg="white")
+    label_1.grid(row = 0)
+
+
 def commencer():
+    """fonction qui ouvre le jeu snake dans une fenetre a part"""
     global TERRAIN
+    global label_score
     fenetre = tk.Toplevel(root)
     fenetre.title("SNAKE")
 
+    #programme principal de snake
+    
+    label_score= tk.Label(fenetre, text = "score : 0")
+    label_score.grid(row = 0)
     TERRAIN = tk.Canvas(fenetre, height = HAUTEUR, width = LARGEUR, bg = "grey20")
-    TERRAIN.grid()
+    TERRAIN.grid(row = 1)
+
+   
 
     quadrillage()
     demarrer()
     creer_premiere_pomme()
     fonction_mur()
+
 
 #################################################################################
 #################################################################################
@@ -248,31 +320,6 @@ def commencer():
 root = tk.Tk()
 root.geometry("800x650")
 root.title("Création du menu")
-
-
-# fonctions menu
-
-def comment_jouer():
-    pass
-
-def scores():
-    f = tk.Toplevel(root)
-    f.title("Tableau des scores")
-    label_1 = tk.Label(f, text="nom    10", font=("Helvetica", "28"), bg="dark green", fg="white")
-    label_1.grid(row = 0)
-
-def commencer():
-    global TERRAIN
-    fenetre = tk.Toplevel(root)
-    fenetre.title("SNAKE")
-
-    TERRAIN = tk.Canvas(fenetre, height = HAUTEUR, width = LARGEUR, bg = "grey20")
-    TERRAIN.grid()
-
-    quadrillage()
-    demarrer()
-    creer_premiere_pomme()
-    fonction_mur()
 
 
 canvas = tk.Canvas(root, bg="dark green", height=650, width=800)
