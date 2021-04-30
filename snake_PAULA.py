@@ -279,12 +279,14 @@ def aggrandir_serpent():
 def game_over():
     global id_after
     global id_text
+    global score
     
     TERRAIN.after_cancel(id_after)
     id_text = []
     id_text.extend([TERRAIN.create_rectangle((180,175),(420,225), fill = "black"),
-                    TERRAIN.create_text(300,200, text = "game over", fill = "red", font = ("Helvetica", 32))])
+                    TERRAIN.create_text(300,200, text = "GAME OVER", fill = "red", font = ("Helvetica", 32))])
     
+    score = 0
     TERRAIN.after(1000, lambda : transition_vers_menu())
 
 
