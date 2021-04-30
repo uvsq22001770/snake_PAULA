@@ -1,4 +1,13 @@
-# Projet_2
+#########################################
+# groupe LDDMP 3
+# Ismaël RAIS
+# Ines ROSENTHAL
+# Hajar ASBAI
+# Adrien HANNA 
+# Quentin ASSIE
+# Paula POP
+# https://github.com/uvsq22001770/Projet_2.git
+#########################################
 
 import tkinter as tk
 import random as rd 
@@ -15,7 +24,9 @@ COULEUR_QUADR = "grey60"
 #########################################
 # définition des variables globales
 direction = 0
+buffer = 0
 score = 0
+murs = []
 serpent = []
 pomme = []
 coordonnees_mur = []
@@ -51,7 +62,7 @@ def creer_premiere_pomme():
     j=rd.randint(1,12)
     
     #la pomme ne peut pas apparaitre dans le serpent
-    if (i,j) in serpent:
+    if (i,j) in coordonnees_serpent :
         creer_premiere_pomme()
     
     else:
@@ -61,14 +72,15 @@ def creer_premiere_pomme():
 
 def fonction_mur():
     """creation des murs qui encadrent le terrain"""
+    global murs
     for i in range(1,19):
-        TERRAIN.create_rectangle(i*30,0,(i+1)*30,30,fill='#814436')
-        TERRAIN.create_rectangle(i*30,390,(i+1)*30,420,fill='#814436')
+        murs.append(TERRAIN.create_rectangle(i*30,0,(i+1)*30,30,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(i*30,390,(i+1)*30,420,fill='#814436'))
         coordonnees_mur.append((i,0))
         coordonnees_mur.append((i,13))
     for j in range(14):
-        TERRAIN.create_rectangle(0,j*30,30,(j+1)*30,fill='#814436')
-        TERRAIN.create_rectangle(570,j*30,600,(j+1)*30,fill='#814436')
+        murs.append(TERRAIN.create_rectangle(0,j*30,30,(j+1)*30,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(570,j*30,600,(j+1)*30,fill='#814436'))
         coordonnees_mur.append((0,j))
         coordonnees_mur.append((19,j))
 
@@ -79,9 +91,9 @@ def demarrer():
     global coordonnees_serpent
 
     serpent.extend(
-    [[(10,7),TERRAIN.create_oval(300, 210, 330, 240, fill = "green")],
-    [(10,7),TERRAIN.create_oval(300, 210, 330, 240, fill = "green")],
-    [(10,7),TERRAIN.create_oval(300, 210, 330, 240, fill = "green")]]
+    [TERRAIN.create_oval(300, 210, 330, 240, fill = "green"),
+    TERRAIN.create_oval(300, 210, 330, 240, fill = "green"),
+    TERRAIN.create_oval(300, 210, 330, 240, fill = "green")]
     )  
     coordonnees_serpent=[(10,7),(10,7),(10,7)]
     mouvement()
@@ -95,87 +107,95 @@ def demarrer():
 #controle direction du serpent
 def haut(event):
     """change la direction du serpent"""
-    global direction
+    global buffer
     if direction != "bas":
-        direction = "haut"
+        buffer = "haut"
 
 def bas(event):
     """change la direction du serpent"""
-    global direction
+    global buffer
     if direction != "haut":
-        direction = "bas"
+        buffer = "bas"
 
 def droite(event):
     """change la direction du serpent"""
-    global direction
+    global buffer
     if direction != "gauche":
-        direction = "droite"
+        buffer = "droite"
 
 def gauche(event):
     """change la direction du serpent"""
-    global direction
+    global buffer
     if direction != "droite":
-        direction = "gauche"
+        buffer = "gauche"
 
 
 
 def etape_mouvement(i,j):
     """fonction qui fait bouger le serpent d une case dans la direction indiquée"""
-    if direction == 0 :
+    global direction
+
+    if buffer == 0 :
         pass
 
-    elif direction == "haut" :
-        serpent.append([(i,j-1),
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+    elif buffer == "haut" :
+        serpent.append(
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
 
-        TERRAIN.delete(serpent[0][1])
+        TERRAIN.delete(serpent[0])
         del serpent[0]
         coordonnees_serpent.append((i,j-1))
         del coordonnees_serpent[0]
+        
+        direction = "haut"
 
+    elif buffer == "bas" :
+        serpent.append(
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
 
-    elif direction == "bas" :
-        serpent.append([(i,j+1),
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
-
-        TERRAIN.delete(serpent[0][1])
+        TERRAIN.delete(serpent[0])
         del serpent[0]
         coordonnees_serpent.append((i,j+1))
         del coordonnees_serpent[0]
+        direction = "bas"
 
 
-    elif direction == "droite" :
-        serpent.append([(i+1,j),
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+    elif buffer == "droite" :
+        serpent.append(
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
 
-        TERRAIN.delete(serpent[0][1])
+        TERRAIN.delete(serpent[0])
         del serpent[0]
         coordonnees_serpent.append((i+1,j))
         del coordonnees_serpent[0]
-
-
-    elif direction == "gauche" :
-        serpent.append([(i-1,j),
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
         
-        TERRAIN.delete(serpent[0][1])
+        direction = "droite"
+
+
+    elif buffer == "gauche" :
+        serpent.append(
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
+        
+        TERRAIN.delete(serpent[0])
         del serpent[0]
         coordonnees_serpent.append((i-1,j))
         del coordonnees_serpent[0]
+
+        direction = "gauche"
 
 
 def mouvement():
     """fonction qui fait bouger le serpent et fait le test en cas de victoire/defaite"""
     global id_after
-    (i,j) = serpent[-1][0]
+    (i,j) = coordonnees_serpent[-1]
     etape_mouvement(i,j) 
 
     #le serpent s'arrête lorsqu'il touche le mur
-    if serpent[-1][0] in coordonnees_mur:
+    if coordonnees_serpent[-1] in coordonnees_mur:
         game_over()
     
     #le serpent s'aggrandit quand il touche une pomme
-    elif serpent[-2][0] in pomme:
+    elif coordonnees_serpent[-2] in pomme:
         aggrandir_serpent()
         augmenter_score()
         creer_pommes()
@@ -224,31 +244,31 @@ def creer_pommes():
 
 def aggrandir_serpent():
     """le corps du serpent s'aggrandit d'une boule"""
-    (i,j)=serpent[0][0]
+    (i,j)=coordonnees_serpent[0]
     
     if direction==0 :
         pass
 
     elif direction == "haut" :
-        serpent.insert(0,[(i,j-1),
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+        serpent.insert(0,
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
         coordonnees_serpent.insert(0,(i,j-1))
 
 
     elif direction == "bas" :
-        serpent.insert(0,[(i,j+1),
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+        serpent.insert(0,
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
         coordonnees_serpent.insert(0,(i,j+1))
 
 
     elif direction == "droite" :
-        serpent.insert(0,[(i+1,j),
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+        serpent.insert(0,
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
         coordonnees_serpent.insert(0,(i+1,j))
 
     elif direction == "gauche" :
-        serpent.insert(0,[(i-1,j),
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green")])
+        serpent.insert(0,
+        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
         coordonnees_serpent.insert(0,(i-1,j))
 
 
@@ -259,15 +279,28 @@ def aggrandir_serpent():
 def game_over():
     global id_after
     global id_text
+    
     TERRAIN.after_cancel(id_after)
-    id_text = TERRAIN.create_text(300,200, text = "game over", fill = "red", font = "Helvetica")  
+    id_text = []
+    id_text.extend([TERRAIN.create_rectangle((180,175),(420,225), fill = "black"),
+                    TERRAIN.create_text(300,200, text = "game over", fill = "red", font = ("Helvetica", 32))])
     
     TERRAIN.after(1000, lambda : transition_vers_menu())
 
 
 def transition_vers_menu():
     global id_text
-    TERRAIN.delete(id_text)
+    global direction, serpent, coordonnees_serpent, coordonnees_mur, murs
+    direction = 0
+    coordonnees_serpent = []
+    for i in serpent:
+        TERRAIN.delete(i)
+    serpent= []
+    for i in murs :
+        TERRAIN.delete(i)
+    murs = []
+    TERRAIN.delete(id_text[0])
+    TERRAIN.delete(id_text[1])
 
 
 
@@ -279,34 +312,47 @@ def transition_vers_menu():
 
 
 
+#################################################################################
+# fenetre des regles du jeu
+#################################################################################
 def comment_jouer():
     fenetre = tk.Toplevel(root)
     fenetre.title("Les débuts")
 
 
+#################################################################################
+# fenetre du tableau des scores
+#################################################################################
 def scores():
     f = tk.Toplevel(root)
     f.title("Tableau des scores")
-    label_1 = tk.Label(f, text="nom    10", font=("Helvetica", "28"), bg="dark green", fg="white")
-    label_1.grid(row = 0)
+ 
 
 
+#################################################################################
+# fenetre snake
+#################################################################################
 def commencer():
     """fonction qui ouvre le jeu snake dans une fenetre a part"""
     global TERRAIN
     global label_score
+
+    #creation de la fenetre
     fenetre = tk.Toplevel(root)
     fenetre.title("SNAKE")
 
-    #programme principal de snake
-    
+    #creation des widgets
     label_score= tk.Label(fenetre, text = "score : 0")
     label_score.grid(row = 0)
     TERRAIN = tk.Canvas(fenetre, height = HAUTEUR, width = LARGEUR, bg = "grey20")
     TERRAIN.grid(row = 1)
 
+    fenetre.bind("<KeyPress-Up>", haut)
+    fenetre.bind("<KeyPress-Down>", bas)
+    fenetre.bind("<KeyPress-Right>", droite)
+    fenetre.bind("<KeyPress-Left>", gauche)
    
-
+    #programme principal
     quadrillage()
     demarrer()
     creer_premiere_pomme()
@@ -315,8 +361,14 @@ def commencer():
 
 #################################################################################
 #################################################################################
+# creation du menu
+#################################################################################
+#################################################################################
 
-# création de la fenêtre + paramétrage
+
+#################################################################################
+# création de la fenêtre et des widgets
+#################################################################################
 root = tk.Tk()
 root.geometry("800x650")
 root.title("Création du menu")
@@ -328,17 +380,35 @@ canvas.grid(rowspan = 6, columnspan = 6)
 
 titre = tk.Label(root, text="SNAKE", font=("Helvetica", "28"), bg="dark green", fg="white")
 niveaux = tk.Label(root, text="LEVELS", font=("Helvetica", "16"), bg="dark green", fg="white")
+
 niveau_1 = tk.Radiobutton(root, text="Level 1 : Easy", 
                         font=("Helvetica", "16"), bg="dark green", fg="white", 
                         indicatoron=1, relief="raised")
-niveau_2 = tk.Radiobutton(root, text="Level 2 : Medium", font=("Helvetica", "16"), bg="dark green", fg="white", indicatoron=1, relief="raised")
-niveau_3 = tk.Radiobutton(root, text="Level 3 : Hard", font=("Helvetica", "16"), bg="dark green", fg="white", indicatoron=1, relief="raised")
+niveau_2 = tk.Radiobutton(root, text="Level 2 : Medium",
+                        font=("Helvetica", "16"), bg="dark green", fg="white",
+                        indicatoron=1, relief="raised")
+niveau_3 = tk.Radiobutton(root, text="Level 3 : Hard",
+                        font=("Helvetica", "16"), bg="dark green", fg="white",
+                        indicatoron=1, relief="raised")
+
 vitesse = tk.Label(root, text="SPEED", font=("Helvetica", "16"), bg="dark green", fg="white")
-vitesse_1 = tk.Radiobutton(root, text="Slow", font=("Helvetica", "16"), bg="dark green", fg="white", indicatoron=1, relief="raised")
-vitesse_2 = tk.Radiobutton(root, text="Normal", font=("Helvetica", "16"), bg="dark green", fg="white", indicatoron=1, relief="raised")
-vitesse_3 = tk.Radiobutton(root, text="Fast", font=("Helvetica", "16"), bg="dark green", fg="white", indicatoron=1, relief="raised")
+
+vitesse_1 = tk.Radiobutton(root, text="Slow",
+                        font=("Helvetica", "16"), bg="dark green", fg="white",
+                        indicatoron=1, relief="raised")
+vitesse_2 = tk.Radiobutton(root, text="Normal",
+                        font=("Helvetica", "16"), bg="dark green", fg="white",
+                        indicatoron=1, relief="raised")
+vitesse_3 = tk.Radiobutton(root, text="Fast",
+                        font=("Helvetica", "16"), bg="dark green", fg="white",
+                        indicatoron=1, relief="raised")
+
 vitesse_personalisee = tk.Label(root, text="CHOOSE YOUR SPEED", font=("Helvetica", "16"), bg="dark green", fg="white")
 
+
+#################################################################################
+# placement des widgets
+#################################################################################
 
 titre.grid(column=0, row=0, columnspan=3)
 niveaux.grid(column=0, row=1, columnspan=3)
@@ -351,7 +421,10 @@ vitesse_2.grid(column=1, row=4)
 vitesse_3.grid(column=2, row=4)
 vitesse_personalisee.grid(column=0, row=5, columnspan=3)
 
-# widgets
+#################################################################################
+# widgets du menu deroulant
+#################################################################################
+
 mainmenu = tk.Menu(root)
 
 regles = tk.Menu(mainmenu, tearoff=0)
@@ -371,6 +444,10 @@ mainmenu.add_cascade(label="Règles du jeu", menu=regles)
 mainmenu.add_cascade(label="Tableau des scores", menu=tab)
 mainmenu.add_cascade(label="Commencer", menu=debut)
 
+
+#################################################################################
+# gestion des evenements
+#################################################################################
 root.bind("<KeyPress-Up>", haut)
 root.bind("<KeyPress-Down>", bas)
 root.bind("<KeyPress-Right>", droite)
