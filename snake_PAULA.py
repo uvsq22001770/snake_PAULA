@@ -295,6 +295,7 @@ def game_over():
 
 
 
+
 def transition_vers_menu():
     global id_text
     global serpent, coordonnees_serpent, coordonnees_mur, murs, buffer
@@ -350,6 +351,7 @@ def demande_de_nom():
         print(pseudos_joueur)
         Saisie_nom.delete(0,20)
         demander_nom.destroy()
+        fenetre.withdraw()
 
 
     CANVAS_nom=tk.Canvas(demander_nom,height=300,width=300,bg='dark green')
@@ -393,6 +395,7 @@ def commencer():
     """fonction qui ouvre le jeu snake dans une fenetre a part"""
     global TERRAIN
     global label_score
+    global fenetre
 
     #creation de la fenetre
     fenetre = tk.Toplevel(root)
