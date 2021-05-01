@@ -31,7 +31,8 @@ murs = []
 serpent = []
 pomme = []
 coordonnees_mur = []
-coordonnees_serpent =[]
+coordonnees_serpent = []
+pseudos_joueur = []
 
 #########################################
 # définition des fonctions
@@ -289,6 +290,9 @@ def game_over():
     
     score = 0
     TERRAIN.after(1000, lambda : transition_vers_menu())
+    demande_de_nom()
+
+
 
 
 def transition_vers_menu():
@@ -333,6 +337,36 @@ def vitesse3():
     "fonction qui donne une vitesse rapide au serpent"
     global vitesse_serpent
     vitesse_serpent=200
+
+def demande_de_nom():
+    "fonction qui ouvre une fenêtre qui demande le pseudo du joeur"
+    demander_nom = tk.Tk()
+    demander_nom.title("le nom du joueur")
+
+    def fermeture_fenetre(event):
+        "fonction qui ferme la fenêtre si le joueur valide son pseudo"
+        global pseudos_joueur
+        pseudos_joueur.append(Saisie_nom.get())
+        print(pseudos_joueur)
+        Saisie_nom.delete(0,20)
+        demander_nom.destroy()
+
+
+    CANVAS_nom=tk.Canvas(demander_nom,height=300,width=300,bg='dark green')
+    Label_nom=tk.Label(demander_nom,text="What's your username?",font=('Helvetica',15),bg='dark green')
+    Label_instruction=tk.Label(demander_nom,text='20 characters only',font=('Helvetica',12),bg='dark green',fg='red')
+    Label_instruction2=tk.Label(demander_nom,text='Press Enter to confirm',font=('Helvetica',12),bg='dark green')
+    Saisie_nom=tk.Entry(demander_nom,bg='dark green',fg='white',width=20,font=('Helvetica',14))
+
+    CANVAS_nom.grid(rowspan=3,columnspan=1)
+    Label_nom.grid(row=0,column=0,sticky='s')
+    Saisie_nom.grid(row=1,column=0)
+    Label_instruction.grid(row=2,column=0,sticky='n')
+    Label_instruction2.grid(row=2,column=0)
+
+    demander_nom.bind('<KeyPress-Return>',fermeture_fenetre)
+
+    demander_nom.mainloop()
 
 
 #################################################################################
