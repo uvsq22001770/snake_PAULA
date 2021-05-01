@@ -314,21 +314,25 @@ def transition_vers_menu():
 #################################################################################
 
 def valider(event):
+    "fonction qui demande une vitesse au joueur"
     global vitesse_serpent
     vitesse_serpent=demande_vitesse.get()
     demande_vitesse.delete(0,6)
 
 def vitesse1():
+    "fonction qui donne une vitesse lente au serpent"
     global vitesse_serpent
-    vitesse_serpent=900
+    vitesse_serpent=700
 
 def vitesse2():
+    "fonction qui donne une vitesse moyenne au serpent"
     global vitesse_serpent
-    vitesse_serpent=600
+    vitesse_serpent=450
 
 def vitesse3():
+    "fonction qui donne une vitesse rapide au serpent"
     global vitesse_serpent
-    vitesse_serpent=300
+    vitesse_serpent=200
 
 
 #################################################################################
@@ -415,13 +419,13 @@ vitesse = tk.Label(root, text="SPEED", font=("Helvetica", "16"), bg="dark green"
 
 vitesse_1 = tk.Radiobutton(root, text="Slow",
                         font=("Helvetica", "16"), bg="dark green", fg="white",
-                        indicatoron=1, relief="raised")
+                        indicatoron=1, relief="raised",command=vitesse1)
 vitesse_2 = tk.Radiobutton(root, text="Normal",
                         font=("Helvetica", "16"), bg="dark green", fg="white",
-                        indicatoron=1, relief="raised")
+                        indicatoron=1, relief="raised",command=vitesse2)
 vitesse_3 = tk.Radiobutton(root, text="Fast",
                         font=("Helvetica", "16"), bg="dark green", fg="white",
-                        indicatoron=1, relief="raised")
+                        indicatoron=1, relief="raised",command=vitesse3)
 
 vitesse_personalisee = tk.Label(root, text="CHOOSE YOUR SPEED", font=("Helvetica", "16"), bg="dark green", fg="white")
 Label1=tk.Label(root,text='mvt/ms',font=('Helvetica',10),bg='darkgreen',fg='white')
