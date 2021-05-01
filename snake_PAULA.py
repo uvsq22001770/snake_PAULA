@@ -26,6 +26,7 @@ COULEUR_QUADR = "grey60"
 direction = 0
 buffer = 0
 score = 0
+vitesse_serpent = 600
 murs = []
 serpent = []
 pomme = []
@@ -292,8 +293,8 @@ def game_over():
 
 def transition_vers_menu():
     global id_text
-    global direction, serpent, coordonnees_serpent, coordonnees_mur, murs
-    direction = 0
+    global serpent, coordonnees_serpent, coordonnees_mur, murs, buffer
+    buffer = 0
     coordonnees_serpent = []
     for i in serpent:
         TERRAIN.delete(i)
@@ -312,6 +313,22 @@ def transition_vers_menu():
 #################################################################################
 #################################################################################
 
+def valider(event):
+    global vitesse_serpent
+    vitesse_serpent=demande_vitesse.get()
+    demande_vitesse.delete(0,6)
+
+def vitesse1():
+    global vitesse_serpent
+    vitesse_serpent=900
+
+def vitesse2():
+    global vitesse_serpent
+    vitesse_serpent=600
+
+def vitesse3():
+    global vitesse_serpent
+    vitesse_serpent=300
 
 
 #################################################################################
@@ -377,7 +394,8 @@ root.title("Création du menu")
 
 
 canvas = tk.Canvas(root, bg="dark green", height=650, width=800)
-canvas.grid(rowspan = 6, columnspan = 6)
+canvas.grid(rowspan = 8, columnspan = 6)
+
 
 
 titre = tk.Label(root, text="SNAKE", font=("Helvetica", "28"), bg="dark green", fg="white")
@@ -406,6 +424,11 @@ vitesse_3 = tk.Radiobutton(root, text="Fast",
                         indicatoron=1, relief="raised")
 
 vitesse_personalisee = tk.Label(root, text="CHOOSE YOUR SPEED", font=("Helvetica", "16"), bg="dark green", fg="white")
+Label1=tk.Label(root,text='mvt/ms',font=('Helvetica',10),bg='darkgreen',fg='white')
+Label2=tk.Label(root,text='PRESS ENTER TO CONFIRM',font=('Helvetica',10),bg='darkgreen',fg='white')
+
+demande_vitesse=tk.Entry(root,bg='darkgreen',fg='white')
+
 
 
 #################################################################################
@@ -422,6 +445,10 @@ vitesse_1.grid(column=0, row=4)
 vitesse_2.grid(column=1, row=4)
 vitesse_3.grid(column=2, row=4)
 vitesse_personalisee.grid(column=0, row=5, columnspan=3)
+Label1.grid(column=1,row=6,sticky='es')
+Label2.grid(column=1,row=7,sticky='n')
+demande_vitesse.grid(column=1,row=6, sticky='s')
+
 
 #################################################################################
 # widgets du menu deroulant
@@ -454,6 +481,8 @@ root.bind("<KeyPress-Up>", haut)
 root.bind("<KeyPress-Down>", bas)
 root.bind("<KeyPress-Right>", droite)
 root.bind("<KeyPress-Left>", gauche)
+root.bind('<KeyPress-Return>',valider)
+
 
 # boucle principale
 
