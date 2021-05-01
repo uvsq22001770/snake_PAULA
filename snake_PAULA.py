@@ -294,8 +294,6 @@ def game_over():
 
 
 
-
-
 def transition_vers_menu():
     global id_text
     global serpent, coordonnees_serpent, coordonnees_mur, murs, buffer
@@ -321,28 +319,23 @@ def transition_vers_menu():
 def valider(event):
     "fonction qui demande une vitesse au joueur"
     global vitesse_serpent
-    vitesse_serpent=demande_vitesse.get()
+    vitesse_serpent = demande_vitesse.get()
     demande_vitesse.delete(0,6)
 
-def vitesse1():
-    "fonction qui donne une vitesse lente au serpent"
+def choix_vitesse():
+    """choisit la vitesse du serpent"""
     global vitesse_serpent
-    vitesse_serpent=700
-
-def vitesse2():
-    "fonction qui donne une vitesse moyenne au serpent"
-    global vitesse_serpent
-    vitesse_serpent=450
-
-def vitesse3():
-    "fonction qui donne une vitesse rapide au serpent"
-    global vitesse_serpent
-    vitesse_serpent=200
+    if (vit.get()==0):
+        vitesse_serpent=700
+    elif (vit.get()==1):
+        vitesse_serpent=450
+    elif (vit.get()==2):
+        vitesse_serpent=200
 
 def demande_de_nom():
     "fonction qui ouvre une fenêtre qui demande le pseudo du joeur"
     demander_nom = tk.Tk()
-    demander_nom.title("le nom du joueur")
+    demander_nom.title("Le nom du joueur")
 
     def fermeture_fenetre(event):
         "fonction qui ferme la fenêtre si le joueur valide son pseudo"
@@ -353,41 +346,48 @@ def demande_de_nom():
         demander_nom.destroy()
         fenetre.withdraw()
 
+    frame0 = tk.Frame(demander_nom, bg="dark green", padx=40, pady=40)
+    frame0.pack()
 
-    CANVAS_nom=tk.Canvas(demander_nom,height=300,width=300,bg='dark green')
-    Label_nom=tk.Label(demander_nom,text="What's your username?",font=('Helvetica',15),bg='dark green')
-    Label_instruction=tk.Label(demander_nom,text='20 characters only',font=('Helvetica',12),bg='dark green',fg='red')
-    Label_instruction2=tk.Label(demander_nom,text='Press Enter to confirm',font=('Helvetica',12),bg='dark green')
-    Saisie_nom=tk.Entry(demander_nom,bg='dark green',fg='white',width=20,font=('Helvetica',14))
+    Label_nom = tk.Label(frame0,text="What's your username?",font=('Helvetica',15),bg='dark green', fg="chartreuse3")
+    Label_instruction = tk.Label(frame0,text='20 characters only',font=('Helvetica',12),bg='dark green',fg='orange red')
+    Label_instruction2 = tk.Label(frame0,text='Press Enter to confirm',font=('Helvetica',12),bg='dark green', fg="chartreuse3")
+    Saisie_nom = tk.Entry(frame0, bg='dark green', fg='chartreuse3', width=20, font=('Helvetica',14))
 
-    CANVAS_nom.grid(rowspan=3,columnspan=1)
-    Label_nom.grid(row=0,column=0,sticky='s')
-    Saisie_nom.grid(row=1,column=0)
-    Label_instruction.grid(row=2,column=0,sticky='n')
-    Label_instruction2.grid(row=2,column=0)
+    Label_nom.pack(pady=10)
+    Saisie_nom.pack(pady=10)
+    Label_instruction.pack(pady=5)
+    Label_instruction2.pack(pady=5)
 
-    demander_nom.bind('<KeyPress-Return>',fermeture_fenetre)
-
+    demander_nom.bind('<KeyPress-Return>', fermeture_fenetre)
     demander_nom.mainloop()
+
+def choix_niveau():
+    """en attendant les fonctions de Hajar"""
+    if (niv.get()==0):
+        print("Vous jouez au niveau 1")
+    elif (niv.get()==1):
+        print("Vous jouez au niveau 2")
+    elif (niv.get()==2):
+        print("Vous jouez au niveau 3")
 
 
 #################################################################################
 # fenetre des regles du jeu
 #################################################################################
+
 def comment_jouer():
     fenetre = tk.Toplevel(root)
     fenetre.title("Les débuts")
 
-
 #################################################################################
 # fenetre du tableau des scores
 #################################################################################
+
 def scores():
     f = tk.Toplevel(root)
     f.title("Tableau des scores")
  
-
-
 #################################################################################
 # fenetre snake
 #################################################################################
@@ -425,70 +425,88 @@ def commencer():
 #################################################################################
 #################################################################################
 
-
-#################################################################################
-# création de la fenêtre et des widgets
-#################################################################################
 root = tk.Tk()
-root.geometry("800x650")
-root.title("Création du menu")
+root.geometry("700x600")
+root.title("Menu")
+
+frame_general = tk.Frame(root, bg="dark green", padx=50, pady=20)
+frame_general.pack()
+
+titre = tk.Label(frame_general, text="SNAKE", font=("Helvetica", "28", "bold"), bg="dark green", fg="chartreuse3")
+titre.pack(anchor="n", pady=20)
+
+###################################################################################################
+# niveaux
+###################################################################################################
+
+titre_niveaux = tk.Label(frame_general, text="LEVELS", font=("Helvetica", "20", "bold"), bg="dark green", fg="chartreuse3")
+titre_niveaux.pack(pady=40)
+
+frame1 = tk.Frame(frame_general, bg="dark green")
+frame1.pack()
+
+niveaux = ["Level 1 : Easy", "Level 2 : Medium", "Level 3 : Hard"]
+
+niv = tk.IntVar()
+
+for index in range(len(niveaux)):
+    radiobutton_niveaux = tk.Radiobutton(frame1, text=niveaux[index], 
+                                    variable=niv, 
+                                    value=index, 
+                                    indicatoron=0, 
+                                    command=choix_niveau,
+                                    font=("Helvetica", "16", "bold"),
+                                    bg="dark green",
+                                    fg="chartreuse3")
+    radiobutton_niveaux.pack(side="left", padx=20)
+
+###################################################################################################
+# vitesses
+###################################################################################################
+
+titre_vitesse = tk.Label(frame_general, text="SPEED", font=("Helvetica", "20", "bold"), bg="dark green", fg="chartreuse3")
+titre_vitesse.pack(pady=40)
+
+frame2 = tk.Frame(frame_general, bg="dark green")
+frame2.pack()
+
+vitesses = ["Slow", "Normal", "Fast"]
+
+vit = tk.IntVar()
+
+for index in range(len(niveaux)):
+    radiobutton_vitesses = tk.Radiobutton(frame2, text=vitesses[index], 
+                                    variable=vit, 
+                                    value=index, 
+                                    indicatoron=0, 
+                                    command=choix_vitesse,
+                                    font=("Helvetica", "16", "bold"),
+                                    bg="dark green",
+                                    fg="chartreuse3")
+    radiobutton_vitesses.pack(side="left", padx=20)
 
 
-canvas = tk.Canvas(root, bg="dark green", height=650, width=800)
-canvas.grid(rowspan = 8, columnspan = 6)
+###################################################################################################
+# demande de la vitesse
+###################################################################################################
 
-  
+frame3 = tk.Frame(frame_general, bg="dark green")
+frame3.pack()
 
-titre = tk.Label(root, text="SNAKE", font=("Helvetica", "28"), bg="dark green", fg="white")
-niveaux = tk.Label(root, text="LEVELS", font=("Helvetica", "16"), bg="dark green", fg="white")
+vitesse_personalisee = tk.Label(frame3, text="CHOOSE YOUR SPEED", font=("Helvetica", "20", "bold"), bg="dark green", fg="chartreuse3")
+vitesse_personalisee.pack(pady=40)
 
-niveau_1 = tk.Radiobutton(root, text="Level 1 : Easy", 
-                        font=("Helvetica", "16"), bg="dark green", fg="white", 
-                        indicatoron=1, relief="raised")
-niveau_2 = tk.Radiobutton(root, text="Level 2 : Medium",
-                        font=("Helvetica", "16"), bg="dark green", fg="white",
-                        indicatoron=1, relief="raised")
-niveau_3 = tk.Radiobutton(root, text="Level 3 : Hard",
-                        font=("Helvetica", "16"), bg="dark green", fg="white",
-                        indicatoron=1, relief="raised")
+demande_vitesse = tk.Entry(frame3, bg="dark green", fg="chartreuse3", font=("Helvetica", "14"))
+demande_vitesse.pack(side="left")
 
-vitesse = tk.Label(root, text="SPEED", font=("Helvetica", "16"), bg="dark green", fg="white")
+unite_mouv = tk.Label(frame3, text='mvt/ms', font=('Helvetica', "16"), bg="dark green", fg="chartreuse3")
+unite_mouv.pack(side="left")
 
-vitesse_1 = tk.Radiobutton(root, text="Slow",
-                        font=("Helvetica", "16"), bg="dark green", fg="white",
-                        indicatoron=1, relief="raised",command=vitesse1)
-vitesse_2 = tk.Radiobutton(root, text="Normal",
-                        font=("Helvetica", "16"), bg="dark green", fg="white",
-                        indicatoron=1, relief="raised",command=vitesse2)
-vitesse_3 = tk.Radiobutton(root, text="Fast",
-                        font=("Helvetica", "16"), bg="dark green", fg="white",
-                        indicatoron=1, relief="raised",command=vitesse3)
+frame4 = tk.Frame(frame_general, bg="dark green")
+frame4.pack()
 
-vitesse_personalisee = tk.Label(root, text="CHOOSE YOUR SPEED", font=("Helvetica", "16"), bg="dark green", fg="white")
-Label1=tk.Label(root,text='mvt/ms',font=('Helvetica',10),bg='darkgreen',fg='white')
-Label2=tk.Label(root,text='PRESS ENTER TO CONFIRM',font=('Helvetica',10),bg='darkgreen',fg='white')
-
-demande_vitesse=tk.Entry(root,bg='darkgreen',fg='white')
-
-
-
-#################################################################################
-# placement des widgets
-#################################################################################
-
-titre.grid(column=0, row=0, columnspan=3)
-niveaux.grid(column=0, row=1, columnspan=3)
-niveau_1.grid(column=0, row=2)
-niveau_2.grid(column=1, row=2)
-niveau_3.grid(column=2, row=2)
-vitesse.grid(column=0, row=3, columnspan=3)
-vitesse_1.grid(column=0, row=4)
-vitesse_2.grid(column=1, row=4)
-vitesse_3.grid(column=2, row=4)
-vitesse_personalisee.grid(column=0, row=5, columnspan=3)
-Label1.grid(column=1,row=6,sticky='es')
-Label2.grid(column=1,row=7,sticky='n')
-demande_vitesse.grid(column=1,row=6, sticky='s')
+consigne = tk.Label(frame4, text="PRESS ENTER TO CONFIRM",font=("Helvetica", "8"), bg="dark green", fg="chartreuse3")
+consigne.pack(anchor="s")
 
 
 #################################################################################
@@ -523,7 +541,6 @@ root.bind("<KeyPress-Down>", bas)
 root.bind("<KeyPress-Right>", droite)
 root.bind("<KeyPress-Left>", gauche)
 root.bind('<KeyPress-Return>',valider)
-
 
 # boucle principale
 
