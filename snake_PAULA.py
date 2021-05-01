@@ -91,6 +91,11 @@ def demarrer():
     """fonction qui commence le jeu avec un serpent au milieu"""   
     global serpent
     global coordonnees_serpent
+    global direction
+
+    serpent = []
+    coordonnees_serpent = []
+    direction = 0
 
     serpent.extend(
     [TERRAIN.create_oval(300, 210, 330, 240, fill = "green"),
