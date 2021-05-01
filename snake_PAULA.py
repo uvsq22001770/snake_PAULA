@@ -200,11 +200,11 @@ def mouvement():
         aggrandir_serpent()
         augmenter_score()
         creer_pommes()
-        id_after = TERRAIN.after(300,mouvement)
+        id_after = TERRAIN.after(vitesse_serpent,mouvement)
 
     #if case de devant est vide
     else:
-        id_after = TERRAIN.after(300, mouvement)
+        id_after = TERRAIN.after(vitesse_serpent, mouvement)
 
 
 #################################################################################
