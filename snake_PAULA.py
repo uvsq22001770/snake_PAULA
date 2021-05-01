@@ -396,7 +396,7 @@ root.title("Création du menu")
 canvas = tk.Canvas(root, bg="dark green", height=650, width=800)
 canvas.grid(rowspan = 8, columnspan = 6)
 
-
+ 
 
 titre = tk.Label(root, text="SNAKE", font=("Helvetica", "28"), bg="dark green", fg="white")
 niveaux = tk.Label(root, text="LEVELS", font=("Helvetica", "16"), bg="dark green", fg="white")
