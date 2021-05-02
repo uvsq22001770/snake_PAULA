@@ -26,6 +26,7 @@ COULEUR_QUADR = "grey60"
 direction = 0
 buffer = 0
 score = 0
+variable_mur = 1
 vitesse_serpent = 600
 murs = []
 serpent = []
@@ -96,6 +97,79 @@ def fonction_mur():
         coordonnees_mur.append((0,j))
         coordonnees_mur.append((19,j))
 
+def murs_2():
+    global murs
+    global TERRAIN
+    for i in range(5,13):
+        murs.append(TERRAIN.create_rectangle(i*30,3*30,(i+1)*30,30*3+30,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(i*30,390,(i+1)*30,420,fill='#814436'))
+        coordonnees_mur.append((i,3))
+        coordonnees_mur.append((i,13))
+    for j in range(4,6):
+        murs.append(TERRAIN.create_rectangle(5*30,j*30,30+5*30,(j+1)*30,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(570,j*30,600,(j+1)*30,fill='#814436'))
+        coordonnees_mur.append((5,j))
+        coordonnees_mur.append((19,j))
+
+def murs_3():
+    global TERRAIN
+    global murs
+    for i in range(12,16):
+        murs.append(TERRAIN.create_rectangle(i*30,7*30,(i+1)*30,30+7*30,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(i*30,390,(i+1)*30,420,fill='#814436'))
+        coordonnees_mur.append((i,7))
+        coordonnees_mur.append((i,13))
+    for j in range(4,7):
+        murs.append(TERRAIN.create_rectangle(12*30,j*30,30+12*30,(j+1)*30,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(570,j*30,600,(j+1)*30,fill='#814436'))
+        coordonnees_mur.append((12,j))
+        coordonnees_mur.append((19,j))
+
+def murs_4():
+    global murs
+    global TERRAIN
+    for i in range(3,6):
+        murs.append(TERRAIN.create_rectangle(i*30,6*30,(i+1)*30,30+6*30,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(i*30,390,(i+1)*30,420,fill='#814436'))
+        coordonnees_mur.append((i,6))
+        coordonnees_mur.append((i,13))
+    for j in range(6,11):
+        murs.append(TERRAIN.create_rectangle(8*30,j*30,30+8*30,(j+1)*30,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(570,j*30,600,(j+1)*30,fill='#814436'))
+        coordonnees_mur.append((8,j))
+        coordonnees_mur.append((19,j))
+
+def murs_5():
+    global murs
+    global TERRAIN
+    for i in range(13,17):
+        murs.append(TERRAIN.create_rectangle(i*30,10*30,(i+1)*30,30+10*30,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(i*30,390,(i+1)*30,420,fill='#814436'))
+        coordonnees_mur.append((i,10))
+        coordonnees_mur.append((i,13))
+
+def fonction_mur_terrain():
+    global coordonnees_mur
+    global murs
+    if variable_mur == 1:        
+        murs = []
+        coordonnees_mur = []
+        fonction_mur()
+        murs_2()
+    elif variable_mur == 2:   
+        murs = []
+        coordonnees_mur = []
+        fonction_mur()
+        murs_3()
+        murs_2()
+    elif variable_mur == 3:      
+        murs = []
+        coordonnees_mur = []
+        fonction_mur()
+        murs_3()
+        murs_2()
+        murs_4()
+        murs_5()
 
 def demarrer():
     """fonction qui commence le jeu avec un serpent au milieu"""   
@@ -110,9 +184,9 @@ def demarrer():
     score = 0
 
     serpent.extend(
-    [TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green"),
-    TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green"),
-    TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green")]
+    [TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green", outline = 'grey20'),
+    TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green", outline = 'grey20'),
+    TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green", outline = 'grey20')]
     )  
     coordonnees_serpent=[(10,7),(10,7),(10,7)]
     mouvement()
@@ -360,7 +434,7 @@ def aggrandir_serpent():
 def game_over():
     global id_after
     global id_text
-    
+
     TERRAIN.after_cancel(id_after)
     id_text = []
     id_text.extend([TERRAIN.create_rectangle((160,175),(440,225), fill = "black"),
@@ -407,6 +481,16 @@ def choix_vitesse():
     elif (vit.get()==2):
         vitesse_serpent=200
 
+def choix_niveau():
+    """en attendant les fonctions de Hajar"""
+    global variable_mur
+    if (niv.get()==0):
+        variable_mur=1
+    elif (niv.get()==1):
+        variable_mur=2
+    elif (niv.get()==2):
+        variable_mur=3
+
 def demande_de_nom():
     "fonction qui ouvre une fenêtre qui demande le pseudo du joeur"
     demander_nom = tk.Tk()
@@ -441,15 +525,7 @@ def demande_de_nom():
     demander_nom.bind('<KeyPress-Return>', fermeture_fenetre)
     demander_nom.mainloop()
 
-def choix_niveau():
-    """en attendant les fonctions de Hajar"""
-    if (niv.get()==0):
-        print("Vous jouez au niveau 1")
-    elif (niv.get()==1):
-        print("Vous jouez au niveau 2")
-    elif (niv.get()==2):
-        print("Vous jouez au niveau 3")
-
+    
 
 #################################################################################
 # fenetre des regles du jeu
@@ -507,6 +583,8 @@ def commencer():
     demarrer()
     creer_premiere_pomme()
     fonction_mur()
+    fonction_mur_terrain()
+
 
 
 #################################################################################
