@@ -35,16 +35,19 @@ coordonnees_serpent = []
 pseudos_joueur = []
 L = []
 
-liste_username_score=[ ["Username0", 0], ["Username1", 0],
-   ["Username3", 0], ["Username4", 0], ["Username5", 0], ["Username6", 0], ["Username7", 0], ["Username8", 0], ["Username9", 0] ]
+liste_username_score=[ ["Username", 0], ["Username", 0],
+   ["Username", 0], ["Username", 0], ["Username", 0], ["Username", 0],
+   ["Username", 0], ["Username", 0], ["Username", 0] ]
 
 #########################################
 # définition des fonctions
 
 
 #fonction quadrillage qui doit disparaitre
+
 def quadrillage():
     """ATTENTION le quadrillage doit disparaitre pour le rendu final"""
+
     y = 0
     while y <= HAUTEUR:
         TERRAIN.create_line((0, y), (LARGEUR, y), fill=COULEUR_QUADR)
@@ -107,9 +110,9 @@ def demarrer():
     score = 0
 
     serpent.extend(
-    [TERRAIN.create_oval(300, 210, 330, 240, fill = "green"),
-    TERRAIN.create_oval(300, 210, 330, 240, fill = "green"),
-    TERRAIN.create_oval(300, 210, 330, 240, fill = "green")]
+    [TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green"),
+    TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green"),
+    TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green")]
     )  
     coordonnees_serpent=[(10,7),(10,7),(10,7)]
     mouvement()
@@ -156,7 +159,7 @@ def etape_mouvement(i,j):
 
     elif buffer == "haut" :
         serpent.append(
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
+        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
 
         TERRAIN.delete(serpent[0])
         del serpent[0]
@@ -167,7 +170,7 @@ def etape_mouvement(i,j):
 
     elif buffer == "bas" :
         serpent.append(
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
+        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
 
         TERRAIN.delete(serpent[0])
         del serpent[0]
@@ -178,7 +181,7 @@ def etape_mouvement(i,j):
 
     elif buffer == "droite" :
         serpent.append(
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
+        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
 
         TERRAIN.delete(serpent[0])
         del serpent[0]
@@ -190,7 +193,7 @@ def etape_mouvement(i,j):
 
     elif buffer == "gauche" :
         serpent.append(
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
+        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
         
         TERRAIN.delete(serpent[0])
         del serpent[0]
@@ -224,6 +227,7 @@ def mouvement():
 
 #################################################################################
 # snake mange une pomme - creer nouvelle pomme - agrandir snake - augmenter score
+# ecrire dans le fichier texte
 #################################################################################
 
 def augmenter_score():
@@ -232,12 +236,14 @@ def augmenter_score():
     global score
 
     score += 1
-    print(score)
     label_score.config(text= "score : " + str(score))
 
 
 
+#################################################################################
+# ecriture dans le fichier texte
 def liste():
+    """fonction qui ajoute le nom et le score du joueur a la liste"""
     global pseudos_joueur
     global score
     global liste_username_score
@@ -245,19 +251,20 @@ def liste():
         liste_username_score.extend([[pseudos_joueur[0], score]])
         pseudos_joueur.remove(pseudos_joueur[0])
         score = 0
-    print(liste_username_score)
 
 def score_trie(N):
+    """clef pour tirer les scores par ordre croissant"""
     return N[1]
 
 def liste_triee():
-    global L
-    L = sorted(liste_username_score, reverse = True, key=score_trie)
-    return L
+    """trie la liste des scores"""
+    global liste_username_score
+    liste_username_score = sorted(liste_username_score, reverse = True, key=score_trie)
 
 def ecrire():
+    """ecris la liste des scores dans le fichier texte"""
     global liste_username_score
-    global L
+    L = liste_username_score
     fic = open("tab_scores", "w")
     for i in range(20):
         if i % 2 == 1:
@@ -277,6 +284,7 @@ def ecrire():
 
 
 def lire():
+    """lis le fichier texte et crée le texte du tableau des scores"""
     global f
     j = 1
     i = 1
@@ -291,8 +299,8 @@ def lire():
             nom = ligne    
     fic.close()   
 
-    
-
+#################################################################################
+ 
 def creer_pommes():
     """creation de pommes une fois que le serpent a mangé la première"""
     global POMME
@@ -324,24 +332,24 @@ def aggrandir_serpent():
 
     elif direction == "haut" :
         serpent.insert(0,
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
+        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
         coordonnees_serpent.insert(0,(i,j-1))
 
 
     elif direction == "bas" :
         serpent.insert(0,
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
+        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
         coordonnees_serpent.insert(0,(i,j+1))
 
 
     elif direction == "droite" :
         serpent.insert(0,
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
+        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
         coordonnees_serpent.insert(0,(i+1,j))
 
     elif direction == "gauche" :
         serpent.insert(0,
-        TERRAIN.create_oval(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
+        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
         coordonnees_serpent.insert(0,(i-1,j))
 
 
@@ -352,15 +360,12 @@ def aggrandir_serpent():
 def game_over():
     global id_after
     global id_text
-    global score
     
     TERRAIN.after_cancel(id_after)
     id_text = []
-    id_text.extend([TERRAIN.create_rectangle((180,175),(420,225), fill = "black"),
+    id_text.extend([TERRAIN.create_rectangle((160,175),(440,225), fill = "black"),
                     TERRAIN.create_text(300,200, text = "GAME OVER", fill = "red", font = ("Helvetica", 32))])
     
-
-    TERRAIN.after(1000, lambda : transition_vers_menu())
     demande_de_nom()
 
 
@@ -378,7 +383,6 @@ def transition_vers_menu():
     murs = []
     TERRAIN.delete(id_text[0])
     TERRAIN.delete(id_text[1])
-
 
 
 #################################################################################
@@ -411,11 +415,15 @@ def demande_de_nom():
     def fermeture_fenetre(event):
         "fonction qui ferme la fenêtre si le joueur valide son pseudo"
         global pseudos_joueur
+        transition_vers_menu()
         pseudos_joueur.append(Saisie_nom.get())
-        print(pseudos_joueur)
         Saisie_nom.delete(0,20)
         demander_nom.destroy()
         fenetre.withdraw()
+        liste()
+        liste_triee()
+        ecrire()
+        
 
     frame0 = tk.Frame(demander_nom, bg="dark green", padx=40, pady=40)
     frame0.pack()
@@ -448,6 +456,7 @@ def choix_niveau():
 #################################################################################
 
 def comment_jouer():
+    """fonction qui ouvre une fenetre d instructions"""
     fenetre = tk.Toplevel(root)
     fenetre.title("Les débuts")
 
@@ -456,20 +465,17 @@ def comment_jouer():
 #################################################################################
 
 def scores():
+    """fonction qui ouvre le tableau des scores et lis le fichier texte"""
     global f
     f = tk.Toplevel(root)
     f.title("Tableau des scores")
     f.geometry("500x600")
 
-    fond_vert = tk.Canvas(f, bg = "dark green", height = 800, width = 500)
+    fond_vert = tk.Canvas(f, bg = "dark green", height = 2000, width = 500)
     fond_vert.grid(rowspan=30, column = 0)
     label_titre =  tk.Label(f, text="Tableau des scores", font=("Helvetica", "20"), bg="dark green", fg="white")
     label_titre.grid(row = 0)
 
-    liste()
-    liste_triee()
-    print(L)
-    ecrire()
     lire()
  
 #################################################################################
@@ -488,7 +494,7 @@ def commencer():
     #creation des widgets
     label_score= tk.Label(fenetre, text = "score : 0")
     label_score.grid(row = 0)
-    TERRAIN = tk.Canvas(fenetre, height = HAUTEUR, width = LARGEUR, bg = "grey20")
+    TERRAIN = tk.Canvas(fenetre, height = HAUTEUR, width = LARGEUR, bg = "chartreuse3")
     TERRAIN.grid(row = 1)
 
     fenetre.bind("<KeyPress-Up>", haut)
@@ -497,7 +503,7 @@ def commencer():
     fenetre.bind("<KeyPress-Left>", gauche)
    
     #programme principal
-    quadrillage()
+    #quadrillage()
     demarrer()
     creer_premiere_pomme()
     fonction_mur()
