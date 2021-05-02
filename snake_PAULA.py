@@ -67,6 +67,7 @@ def creer_premiere_pomme():
     """creation de la premiere pomme du terrain"""
     global pomme
     global POMME
+    global coordonnees_mur
 
     pomme = []
     POMME = []
@@ -382,9 +383,10 @@ def lire():
 def creer_pommes():
     """creation de pommes une fois que le serpent a mangé la première"""
     global POMME
+    global coordonnees_mur
     i=rd.randint(1,18)
     j=rd.randint(1,12)
-    
+
     #la pomme ne peut apparaître sur le corps du serpent
     if (i,j) in coordonnees_serpent:
         creer_pommes()
