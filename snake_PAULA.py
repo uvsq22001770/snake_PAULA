@@ -33,6 +33,10 @@ pomme = []
 coordonnees_mur = []
 coordonnees_serpent = []
 pseudos_joueur = []
+L = []
+
+liste_username_score=[ ["Username0", 0], ["Username1", 0],
+   ["Username3", 0], ["Username4", 0], ["Username5", 0], ["Username6", 0], ["Username7", 0], ["Username8", 0], ["Username9", 0] ]
 
 #########################################
 # définition des fonctions
@@ -91,11 +95,6 @@ def demarrer():
     """fonction qui commence le jeu avec un serpent au milieu"""   
     global serpent
     global coordonnees_serpent
-    global direction
-
-    serpent = []
-    coordonnees_serpent = []
-    direction = 0
 
     serpent.extend(
     [TERRAIN.create_oval(300, 210, 330, 240, fill = "green"),
@@ -225,6 +224,63 @@ def augmenter_score():
     score += 1
     print(score)
     label_score.config(text= "score : " + str(score))
+
+
+
+def liste():
+    global pseudos_joueur
+    global score
+    global liste_username_score
+    while pseudos_joueur != [] :
+        liste_username_score.extend([[pseudos_joueur[0], score]])
+        pseudos_joueur.remove(pseudos_joueur[0])
+        score = 0
+    print(liste_username_score)
+
+def score_trie(N):
+    return N[1]
+
+def liste_triee():
+    global L
+    L = sorted(liste_username_score, reverse = True, key=score_trie)
+    return L
+
+def ecrire():
+    global liste_username_score
+    global L
+    fic = open("tab_scores", "w")
+    for i in range(20):
+        if i % 2 == 1:
+            fic.write("\n")
+        else:
+            fic.write(str(L[0][0]) + "\n" + str(L[0][1]) + "\n")
+            fic.write(str(L[1][0]) + "\n" + str(L[1][1]) + "\n")
+            fic.write(str(L[2][0]) + "\n" + str(L[2][1]) + "\n")
+            fic.write(str(L[3][0]) + "\n" + str(L[3][1]) + "\n")
+            fic.write(str(L[4][0]) + "\n" + str(L[4][1]) + "\n")
+            fic.write(str(L[5][0]) + "\n" + str(L[5][1]) + "\n")
+            fic.write(str(L[6][0]) + "\n" + str(L[6][1]) + "\n")
+            fic.write(str(L[7][0]) + "\n" + str(L[7][1]) + "\n")
+            fic.write(str(L[8][0]) + "\n" + str(L[8][1]) + "\n")
+            fic.write(str(L[9][0]) + "\n" + str(L[9][1]) + "\n")
+    fic.close()
+
+
+def lire():
+    global f
+    j = 1
+    i = 1
+    fic = open("tab_scores","r")
+    for ligne in fic:
+        j *= -1
+        if j == 1:
+            i += 1
+            label= tk.Label(f, text=(nom + ligne), font=("Helvetica", "10"), bg="dark green", fg="white")
+            label.grid(row = i)
+        elif j == -1:
+            nom = ligne    
+    fic.close()   
+
     
 
 def creer_pommes():
@@ -293,7 +349,7 @@ def game_over():
     id_text.extend([TERRAIN.create_rectangle((180,175),(420,225), fill = "black"),
                     TERRAIN.create_text(300,200, text = "GAME OVER", fill = "red", font = ("Helvetica", 32))])
     
-    score = 0
+
     TERRAIN.after(1000, lambda : transition_vers_menu())
     demande_de_nom()
 
@@ -390,8 +446,21 @@ def comment_jouer():
 #################################################################################
 
 def scores():
+    global f
     f = tk.Toplevel(root)
     f.title("Tableau des scores")
+    f.geometry("500x600")
+
+    fond_vert = tk.Canvas(f, bg = "dark green", height = 800, width = 500)
+    fond_vert.grid(rowspan=30, column = 0)
+    label_titre =  tk.Label(f, text="Tableau des scores", font=("Helvetica", "20"), bg="dark green", fg="white")
+    label_titre.grid(row = 0)
+
+    liste()
+    liste_triee()
+    print(L)
+    ecrire()
+    lire()
  
 #################################################################################
 # fenetre snake
