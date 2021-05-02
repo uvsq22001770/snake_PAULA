@@ -64,6 +64,9 @@ def creer_premiere_pomme():
     global pomme
     global POMME
 
+    pomme = []
+    POMME = []
+
     i=rd.randint(1,18)
     j=rd.randint(1,12)
     
@@ -95,6 +98,13 @@ def demarrer():
     """fonction qui commence le jeu avec un serpent au milieu"""   
     global serpent
     global coordonnees_serpent
+    global direction
+    global score
+
+    serpent = []
+    coordonnees_serpent = []
+    direction = 0
+    score = 0
 
     serpent.extend(
     [TERRAIN.create_oval(300, 210, 330, 240, fill = "green"),
