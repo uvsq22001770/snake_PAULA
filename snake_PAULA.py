@@ -78,6 +78,10 @@ def creer_premiere_pomme():
     if (i,j) in coordonnees_serpent :
         creer_premiere_pomme()
     
+    #la pomme ne peut pas apparaître sur un mur interne
+    if (i,j) in coordonnees_mur :
+        creer_premiere_pomme()
+    
     else:
         pomme.append((i, j))
         POMME=TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red")
@@ -387,6 +391,10 @@ def creer_pommes():
     
     #la pomme ne peut apparaître là où elle a disparu
     elif (i,j) == pomme[0]:
+        creer_pommes()
+    
+    #la pomme ne peut apparaître dans les murs internes
+    elif (i,j) in coordonnees_mur:
         creer_pommes()
 
     else:
