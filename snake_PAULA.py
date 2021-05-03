@@ -82,7 +82,6 @@ def creer_premiere_pomme():
     #la pomme ne peut pas apparaître sur un mur interne
     elif (i,j) in coordonnees_mur :
         creer_premiere_pomme()
-        print('ok bg')
     
     else:
         pomme.append((i, j))
