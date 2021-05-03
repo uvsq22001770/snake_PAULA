@@ -80,8 +80,9 @@ def creer_premiere_pomme():
         creer_premiere_pomme()
     
     #la pomme ne peut pas apparaître sur un mur interne
-    if (i,j) in coordonnees_mur :
+    elif (i,j) in coordonnees_mur :
         creer_premiere_pomme()
+        print('ok bg')
     
     else:
         pomme.append((i, j))
@@ -286,7 +287,7 @@ def mouvement():
     """fonction qui fait bouger le serpent et fait le test en cas de victoire/defaite"""
     global id_after
     (i,j) = coordonnees_serpent[-1]
-    etape_mouvement(i,j) 
+    etape_mouvement(i,j)
 
     #le serpent s'arrête lorsqu'il touche le mur
     if coordonnees_serpent[-1] in coordonnees_mur:
