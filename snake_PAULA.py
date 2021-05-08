@@ -452,8 +452,6 @@ def game_over():
     
     demande_de_nom()
 
-
-
 def transition_vers_menu():
     global id_text
     global serpent, coordonnees_serpent, coordonnees_mur, murs, buffer
@@ -542,9 +540,57 @@ def demande_de_nom():
 #################################################################################
 
 def comment_jouer():
-    """fonction qui ouvre une fenetre d instructions"""
-    fenetre = tk.Toplevel(root)
-    fenetre.title("Les débuts")
+    """fonction qui ouvre une fenetre d'instructions"""
+    f1 = tk.Toplevel(root)
+    f1.title("Règles du jeu")
+    f1.geometry("815x550")
+    f1.resizable(height=False, width=False)
+
+
+    rule = tk.Frame(f1, bg="dark green", padx=40, pady=40)
+    rule.pack()
+
+    regles_jeu = tk.Label(rule, text="Règles du jeu", font=("Helvetica", "20", "bold"), bg="dark green", fg="chartreuse3")
+    mouvement_serpent = tk.Label(rule, text="Comment déplacer le serpent",
+                                font=("Helvetica", "12", "bold"), bg="dark green", fg="chartreuse3")
+    deplacement_droite = tk.Label(rule, text="Pour se déplacer à droite : cliquer sur la flèche de droite",
+                                font=("Helvetica", "10"), bg="dark green", fg="chartreuse3")
+    deplacement_gauche = tk.Label(rule, text="Pour se déplacer à gauche : cliquer sur la flèche de gauche",
+                                font=("Helvetica", "10"), bg="dark green", fg="chartreuse3")
+    deplacement_haut = tk.Label(rule, text="Pour se déplacer vers le haut : cliquer sur la flèche du haut",
+                                font=("Helvetica", "10"), bg="dark green", fg="chartreuse3")
+    deplacement_bas = tk.Label(rule, text="Pour se déplacer vers le bas : cliquer sur la flèche du bas",
+                                font=("Helvetica", "10"), bg="dark green", fg="chartreuse3")
+
+    rule.pack()
+    regles_jeu.pack(pady=15)
+    mouvement_serpent.pack(pady=30)
+    deplacement_droite.pack()
+    deplacement_gauche.pack()
+    deplacement_haut.pack()
+    deplacement_bas.pack()
+
+    texte_consigne = tk.Label(rule, text="Règles du jeu",
+                                font=("Helvetica", "12", "bold"), bg="dark green", fg="chartreuse3")
+    consigne = tk.Label(rule, text="Le but est de manger la pomme.",
+                                font=("Helvetica", "10"), bg="dark green", fg="chartreuse3")
+
+    consigne_1 = tk.Label(rule, text="Lorsqu’elle est mangée, une autre pomme apparaît sur une case aléatoire du plateau, et la longueur du serpent augmente de 1.",
+                                font=("Helvetica", "10"), bg="dark green", fg="chartreuse3")
+
+    consigne_2 = tk.Label(rule, text="La partie s’arrête lorsque la tête du serpent percute un mur ou percute son propre corps.",
+                                font=("Helvetica", "10"), bg="dark green", fg="chartreuse3")
+
+    encouragement = tk.Label(rule, text="Bonne chance ;)",
+                                font=("Helvetica", "12", "bold"), bg="dark green", fg="chartreuse3")
+
+    texte_consigne.pack(pady=30)
+    consigne.pack()
+    consigne_1.pack()
+    consigne_2.pack()
+    encouragement.pack(pady=30)
+
+    f1.mainloop()
 
 #################################################################################
 # fenetre du tableau des scores
