@@ -287,6 +287,7 @@ def mouvement():
     global id_after
     (i,j) = coordonnees_serpent[-1]
     etape_mouvement(i,j) 
+    l1=coordonnees_serpent[0:-3]
 
     #le serpent s'arrête lorsqu'il touche le mur
     if coordonnees_serpent[-1] in coordonnees_mur:
