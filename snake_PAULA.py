@@ -34,7 +34,6 @@ pomme = []
 coordonnees_mur = []
 coordonnees_serpent = []
 pseudos_joueur = []
-L = []
 l1 = []
 
 liste_username_score=[ ["Username", 0], ["Username", 0],
@@ -251,7 +250,7 @@ def etape_mouvement(i,j):
     elif buffer == "bas" :
         serpent.append(
         TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green", outline = 'green'))
-        
+
         TERRAIN.delete(serpent[0])
         del serpent[0]
         coordonnees_serpent.append((i,j+1))
@@ -287,12 +286,8 @@ def mouvement():
     """fonction qui fait bouger le serpent et fait le test en cas de victoire/defaite"""
     global id_after
     (i,j) = coordonnees_serpent[-1]
-<<<<<<< HEAD
-    etape_mouvement(i,j) 
-    l1=coordonnees_serpent[0:-3]
-=======
     etape_mouvement(i,j)
->>>>>>> 78bb1bb2ba9bdd8f0c62e5d7d7a8580ae8fdaa94
+    l1=coordonnees_serpent[0:-3]
 
     #le serpent s'arrête lorsqu'il touche le mur
     if coordonnees_serpent[-1] in coordonnees_mur:
@@ -301,15 +296,15 @@ def mouvement():
     #le serpent s'arrête lorsqu'il se touche lui même
     elif coordonnees_serpent[-1] in l1 :
         game_over()
-    
+     
     #le serpent s'aggrandit quand il touche une pomme
     elif coordonnees_serpent[-2] in pomme:
         aggrandir_serpent()
         augmenter_score()
         creer_pommes()
         id_after = TERRAIN.after(vitesse_serpent,mouvement)
-    
-    #si case de devant est vide
+
+    #if case de devant est vide
     else:
         id_after = TERRAIN.after(vitesse_serpent, mouvement)
 
