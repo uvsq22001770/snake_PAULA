@@ -35,6 +35,7 @@ coordonnees_mur = []
 coordonnees_serpent = []
 pseudos_joueur = []
 L = []
+l1 = []
 
 liste_username_score=[ ["Username", 0], ["Username", 0],
    ["Username", 0], ["Username", 0], ["Username", 0], ["Username", 0],
@@ -189,9 +190,9 @@ def demarrer():
     score = 0
 
     serpent.extend(
-    [TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green", outline = 'grey20'),
-    TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green", outline = 'grey20'),
-    TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green", outline = 'grey20')]
+    [TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green", outline = 'green'),
+    TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green", outline = 'green'),
+    TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green", outline = 'green')]
     )  
     coordonnees_serpent=[(10,7),(10,7),(10,7)]
     mouvement()
@@ -238,7 +239,7 @@ def etape_mouvement(i,j):
 
     elif buffer == "haut" :
         serpent.append(
-        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
+        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green", outline = 'green'))
 
         TERRAIN.delete(serpent[0])
         del serpent[0]
@@ -249,8 +250,8 @@ def etape_mouvement(i,j):
 
     elif buffer == "bas" :
         serpent.append(
-        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
-
+        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green", outline = 'green'))
+        
         TERRAIN.delete(serpent[0])
         del serpent[0]
         coordonnees_serpent.append((i,j+1))
@@ -260,7 +261,7 @@ def etape_mouvement(i,j):
 
     elif buffer == "droite" :
         serpent.append(
-        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
+        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green", outline = 'green'))
 
         TERRAIN.delete(serpent[0])
         del serpent[0]
@@ -272,7 +273,7 @@ def etape_mouvement(i,j):
 
     elif buffer == "gauche" :
         serpent.append(
-        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
+        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green", outline = 'green'))
         
         TERRAIN.delete(serpent[0])
         del serpent[0]
@@ -293,14 +294,18 @@ def mouvement():
     if coordonnees_serpent[-1] in coordonnees_mur:
         game_over()
     
+    #le serpent s'arrête lorsqu'il se touche lui même
+    elif coordonnees_serpent[-1] in l1 :
+        game_over()
+    
     #le serpent s'aggrandit quand il touche une pomme
     elif coordonnees_serpent[-2] in pomme:
         aggrandir_serpent()
         augmenter_score()
         creer_pommes()
         id_after = TERRAIN.after(vitesse_serpent,mouvement)
-
-    #if case de devant est vide
+    
+    #si case de devant est vide
     else:
         id_after = TERRAIN.after(vitesse_serpent, mouvement)
 
@@ -417,24 +422,24 @@ def aggrandir_serpent():
 
     elif direction == "haut" :
         serpent.insert(0,
-        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
+        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green", outline = 'green'))
         coordonnees_serpent.insert(0,(i,j-1))
 
 
     elif direction == "bas" :
         serpent.insert(0,
-        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
+        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green", outline = 'green'))
         coordonnees_serpent.insert(0,(i,j+1))
 
 
     elif direction == "droite" :
         serpent.insert(0,
-        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
+        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green", outline = 'green'))
         coordonnees_serpent.insert(0,(i+1,j))
 
     elif direction == "gauche" :
         serpent.insert(0,
-        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green"))
+        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green", outline = 'green'))
         coordonnees_serpent.insert(0,(i-1,j))
 
 
