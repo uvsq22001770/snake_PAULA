@@ -27,7 +27,8 @@ direction = 0
 buffer = 0
 score = 0
 variable_mur = 1
-vitesse_serpent = 600
+variable_vitesse = 1
+vitesse_serpent = 700
 murs = []
 serpent = []
 pomme = []
@@ -35,6 +36,7 @@ coordonnees_mur = []
 coordonnees_serpent = []
 pseudos_joueur = []
 l1 = []
+liste_vitesse = []
 
 liste_username_score=[ ["Username", 0], ["Username", 0],
    ["Username", 0], ["Username", 0], ["Username", 0], ["Username", 0],
@@ -232,6 +234,10 @@ def gauche(event):
 def etape_mouvement(i,j):
     """fonction qui fait bouger le serpent d une case dans la direction indiquée"""
     global direction
+    global l1
+    global coordonnees_serpent
+
+    l1 = coordonnees_serpent[0:-3]
 
     if buffer == 0 :
         pass
@@ -287,7 +293,6 @@ def mouvement():
     global id_after
     (i,j) = coordonnees_serpent[-1]
     etape_mouvement(i,j)
-    l1=coordonnees_serpent[0:-3]
 
     #le serpent s'arrête lorsqu'il touche le mur
     if coordonnees_serpent[-1] in coordonnees_mur:
@@ -481,21 +486,53 @@ def transition_vers_menu():
 def valider(event):
     "fonction qui demande une vitesse au joueur"
     global vitesse_serpent
-    vitesse_serpent = demande_vitesse.get()
-    demande_vitesse.delete(0,6)
+    global liste_vitesse
+    vitesse_serpent_test = demande_vitesse.get()
+    if vitesse_serpent_test.isdigit():
+        if float(vitesse_serpent_test) == float(200):
+            vitesse_serpent = demande_vitesse.get()
+            demande_vitesse.delete(0,6)
+            valeur_vitesse['text'] = str(vitesse_serpent) +' ms/mvt'
+            liste_vitesse[2].select()
+        elif float(vitesse_serpent_test) == float(450):
+            vitesse_serpent = demande_vitesse.get()
+            demande_vitesse.delete(0,6)
+            liste_vitesse[1].select()
+            valeur_vitesse['text'] = str(vitesse_serpent) +' ms/mvt'
+        elif float(vitesse_serpent_test) == float(700):
+            vitesse_serpent = demande_vitesse.get()
+            demande_vitesse.delete(0,6)
+            liste_vitesse[0].select()
+            valeur_vitesse['text'] = str(vitesse_serpent) +' ms/mvt'
+        else:
+            vitesse_serpent = demande_vitesse.get()
+            demande_vitesse.delete(0,6)
+            valeur_vitesse['text'] = str(vitesse_serpent) +' ms/mvt'
+            deselectionner()
+    else:
+        demande_vitesse.delete(0,6)
+        
 
 def choix_vitesse():
     """choisit la vitesse du serpent"""
     global vitesse_serpent
+    global variable_vitesse
     if (vit.get()==0):
         vitesse_serpent=700
+        variable_vitesse=1
+        valeur_vitesse['text'] = str(vitesse_serpent) +' ms/mvt'
     elif (vit.get()==1):
         vitesse_serpent=450
+        variable_vitesse=2
+        valeur_vitesse['text'] = str(vitesse_serpent) +' ms/mvt'
     elif (vit.get()==2):
         vitesse_serpent=200
+        variable_vitesse=3
+        valeur_vitesse['text'] = str(vitesse_serpent) +' ms/mvt'
+
 
 def choix_niveau():
-    """en attendant les fonctions de Hajar"""
+    """intègre des murs à l'interieur du terrain selon le niveau de difficulté"""
     global variable_mur
     if (niv.get()==0):
         variable_mur=1
@@ -503,6 +540,16 @@ def choix_niveau():
         variable_mur=2
     elif (niv.get()==2):
         variable_mur=3
+
+def deselectionner():
+    global variable_vitesse
+    if variable_vitesse == 1:
+        liste_vitesse[0].deselect()
+    elif variable_vitesse == 2:
+        liste_vitesse[1].deselect()
+    elif variable_vitesse == 3:
+        liste_vitesse[2].deselect()
+
 
 def demande_de_nom():
     "fonction qui ouvre une fenêtre qui demande le pseudo du joeur"
@@ -642,9 +689,9 @@ def commencer():
     #programme principal
     #quadrillage()
     demarrer()
-    creer_premiere_pomme()
     fonction_mur()
     fonction_mur_terrain()
+    creer_premiere_pomme()
 
 
 
@@ -655,7 +702,7 @@ def commencer():
 #################################################################################
 
 root = tk.Tk()
-root.geometry("700x600")
+root.geometry("700x660")
 root.title("Menu")
 
 frame_general = tk.Frame(root, bg="dark green", padx=50, pady=20)
@@ -704,7 +751,7 @@ vitesses = ["Slow", "Normal", "Fast"]
 vit = tk.IntVar()
 
 for index in range(len(niveaux)):
-    radiobutton_vitesses = tk.Radiobutton(frame2, text=vitesses[index], 
+    radiobutton_vitesses=tk.Radiobutton(frame2, text=vitesses[index], 
                                     variable=vit, 
                                     value=index, 
                                     indicatoron=0, 
@@ -713,6 +760,14 @@ for index in range(len(niveaux)):
                                     bg="dark green",
                                     fg="chartreuse3")
     radiobutton_vitesses.pack(side="left", padx=20)
+    liste_vitesse.append(tk.Radiobutton(frame2, text=vitesses[index], 
+                                    variable=vit, 
+                                    value=index, 
+                                    indicatoron=0, 
+                                    command=choix_vitesse,
+                                    font=("Helvetica", "16", "bold"),
+                                    bg="dark green",
+                                    fg="chartreuse3"))
 
 
 ###################################################################################################
@@ -725,18 +780,23 @@ frame3.pack()
 vitesse_personalisee = tk.Label(frame3, text="CHOOSE YOUR SPEED", font=("Helvetica", "20", "bold"), bg="dark green", fg="chartreuse3")
 vitesse_personalisee.pack(pady=40)
 
+consigne = tk.Label(frame3, text="PRESS ENTER TO CONFIRM",font=("Helvetica", "8"), bg="dark green", fg="chartreuse3")
+consigne.pack(side="top",anchor='s')
+
 demande_vitesse = tk.Entry(frame3, bg="dark green", fg="chartreuse3", font=("Helvetica", "14"))
 demande_vitesse.pack(side="left")
 
-unite_mouv = tk.Label(frame3, text='mvt/ms', font=('Helvetica', "16"), bg="dark green", fg="chartreuse3")
+unite_mouv = tk.Label(frame3, text='ms/mvt', font=('Helvetica', "16"), bg="dark green", fg="chartreuse3")
 unite_mouv.pack(side="left")
 
 frame4 = tk.Frame(frame_general, bg="dark green")
 frame4.pack()
 
-consigne = tk.Label(frame4, text="PRESS ENTER TO CONFIRM",font=("Helvetica", "8"), bg="dark green", fg="chartreuse3")
-consigne.pack(anchor="s")
+donne_vitesse = tk.Label(frame4, text='VOTRE VITESSE EST DE:', font=('Helvetica','16'), bg="dark green", fg='orange red')
+donne_vitesse.pack(pady=15,side='left')
 
+valeur_vitesse = tk.Label(frame4, text= str(vitesse_serpent) + ' ms/mvt', font=('Helvetica','16'), bg="dark green", fg='orange red')
+valeur_vitesse.pack(pady=15)
 
 #################################################################################
 # widgets du menu deroulant
