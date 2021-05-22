@@ -14,10 +14,13 @@ import random as rd
  
 
 #########################################
+#########################################
 # définition des constantes
+#########################################
+#########################################
 
 coté = 30
-LARGEUR = 600
+LARGEUR= 600
 HAUTEUR = 420
 COULEUR_QUADR = "grey60"
 
@@ -37,6 +40,7 @@ coordonnees_serpent = []
 pseudos_joueur = []
 l1 = []
 liste_vitesse = []
+test_premiere_lecture = 0
 
 liste_username_score=[ ["Username", 0], ["Username", 0],
    ["Username", 0], ["Username", 0], ["Username", 0], ["Username", 0],
@@ -62,7 +66,7 @@ def quadrillage():
 
  
 #################################################################################
-# debut du snake- pomme - murs - serpent#
+# debut du snake- pomme - murs - serpent
 #################################################################################
 
 def creer_premiere_pomme():
@@ -87,50 +91,50 @@ def creer_premiere_pomme():
     
     else:
         pomme.append((i, j))
-        POMME=TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red")
+        POMME=TERRAIN.create_oval(i*coté, j*coté, (i*coté) + coté, (j*coté) + coté, fill = "red")
 
 
 def fonction_mur():
     """creation des murs qui encadrent le terrain et du niveau 1"""
     global murs, TERRAIN
     for i in range(1,19):
-        murs.append(TERRAIN.create_rectangle(i*30,0,(i+1)*30,30,fill='#814436'))
-        murs.append(TERRAIN.create_rectangle(i*30,390,(i+1)*30,420,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(i*coté,0,(i+1)*coté,coté,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(i*coté,13*coté,(i+1)*coté,13 *coté + coté,fill='#814436'))
         coordonnees_mur.append((i,0))
         coordonnees_mur.append((i,13))
     for i in range(5,13):
-        murs.append(TERRAIN.create_rectangle(i*30,3*30,(i+1)*30,30*3+30,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(i*coté,3*coté,(i+1)*coté,coté*3+coté,fill='#814436'))
         coordonnees_mur.append((i,3))
     for j in range(14):
-        murs.append(TERRAIN.create_rectangle(0,j*30,30,(j+1)*30,fill='#814436'))
-        murs.append(TERRAIN.create_rectangle(570,j*30,600,(j+1)*30,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(0,j*coté,coté,(j+1)*coté,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(19 * coté,j*coté,19*coté+coté,(j+1)*coté,fill='#814436'))
         coordonnees_mur.append((0,j))
         coordonnees_mur.append((19,j))
     for j in range(4,6):
-        murs.append(TERRAIN.create_rectangle(5*30,j*30,30+5*30,(j+1)*30,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(5*coté,j*coté,coté+5*coté,(j+1)*coté,fill='#814436'))
         coordonnees_mur.append((5,j))
   
 def murs_2():
     """creation des murs du niveau 2"""
     global murs, TERRAIN
     for i in range(12,16):
-        murs.append(TERRAIN.create_rectangle(i*30,7*30,(i+1)*30,30+7*30,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(i*coté,7*coté,(i+1)*coté,coté+7*coté,fill='#814436'))
         coordonnees_mur.append((i,7))
     for j in range(4,7):
-        murs.append(TERRAIN.create_rectangle(12*30,j*30,30+12*30,(j+1)*30,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(12*coté,j*coté,coté+12*coté,(j+1)*coté,fill='#814436'))
         coordonnees_mur.append((12,j))
 
 def murs_3():
     """creation des murs du niveau 3"""
     global murs, TERRAIN
     for i in range(3,6):
-        murs.append(TERRAIN.create_rectangle(i*30,6*30,(i+1)*30,30+6*30,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(i*coté,6*coté,(i+1)*coté,coté+6*coté,fill='#814436'))
         coordonnees_mur.append((i,6))
     for i in range(13,17):
-        murs.append(TERRAIN.create_rectangle(i*30,10*30,(i+1)*30,30+10*30,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(i*coté,10*coté,(i+1)*coté,coté+10*coté,fill='#814436'))
         coordonnees_mur.append((i,10))
     for j in range(6,11):
-        murs.append(TERRAIN.create_rectangle(8*30,j*30,30+8*30,(j+1)*30,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(8*coté,j*coté,coté+8*coté,(j+1)*coté,fill='#814436'))
         coordonnees_mur.append((8,j))
     
 
@@ -167,9 +171,9 @@ def demarrer():
     score = 0
 
     serpent.extend(
-    [TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green", outline = 'green'),
-    TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green", outline = 'green'),
-    TERRAIN.create_rectangle(300, 210, 330, 240, fill = "green", outline = 'green')]
+    [TERRAIN.create_rectangle(LARGEUR//2, HAUTEUR//2, LARGEUR//2+ coté, HAUTEUR//2 + coté, fill = "green", outline = 'green'),
+    TERRAIN.create_rectangle(LARGEUR//2, HAUTEUR//2, LARGEUR//2+ coté, HAUTEUR//2 + coté, fill = "green", outline = 'green'),
+    TERRAIN.create_rectangle(LARGEUR//2, HAUTEUR//2, LARGEUR//2+ coté, HAUTEUR//2 + coté, fill = "green", outline = 'green')]
     )  
     coordonnees_serpent=[(10,7),(10,7),(10,7)]
     mouvement()
@@ -220,7 +224,7 @@ def etape_mouvement(i,j):
 
     elif buffer == "haut" :
         serpent.append(
-        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green", outline = 'green'))
+        TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
 
         TERRAIN.delete(serpent[0])
         del serpent[0]
@@ -231,7 +235,7 @@ def etape_mouvement(i,j):
 
     elif buffer == "bas" :
         serpent.append(
-        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green", outline = 'green'))
+        TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
 
         TERRAIN.delete(serpent[0])
         del serpent[0]
@@ -242,7 +246,7 @@ def etape_mouvement(i,j):
 
     elif buffer == "droite" :
         serpent.append(
-        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green", outline = 'green'))
+        TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
 
         TERRAIN.delete(serpent[0])
         del serpent[0]
@@ -254,7 +258,7 @@ def etape_mouvement(i,j):
 
     elif buffer == "gauche" :
         serpent.append(
-        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green", outline = 'green'))
+        TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
         
         TERRAIN.delete(serpent[0])
         del serpent[0]
@@ -307,6 +311,23 @@ def augmenter_score():
 
 #################################################################################
 # ecriture dans le fichier texte
+def premiere_lecture():
+    """premiere lecture du fichier texte si il existe"""
+    global test_premiere_lecture
+    if test_premiere_lecture == 0 :
+        test_premiere_lecture = 1
+        fic = open("tab_scores", "r")
+        j = 1
+        for ligne in fic:
+            j *= -1
+            if j == -1 :
+                var = ligne 
+                liste = var.split("\n")
+                nom = liste[0]
+                
+            elif j == 1 :
+                liste_username_score.append([nom, int(ligne)])
+
 def liste():
     """fonction qui ajoute le nom et le score du joueur a la liste"""
     global pseudos_joueur
@@ -335,6 +356,7 @@ def ecrire():
         if i % 2 == 0: 
             fic.write(str(L[i//2][0]) + "\n" + str(L[i//2][1]) + "\n")
     fic.close()
+
 
 
 def lire():
@@ -378,7 +400,7 @@ def creer_pommes():
         del(pomme[0])
         pomme.append((i,j))
         TERRAIN.delete(POMME)
-        POMME=TERRAIN.create_oval(i*30, j*30, (i*30)+30, (j*30)+30, fill = "red")
+        POMME=TERRAIN.create_oval(i*coté, j*coté, (i*coté)+coté, (j*coté)+coté, fill = "red")
 
 
 
@@ -391,24 +413,24 @@ def aggrandir_serpent():
 
     elif direction == "haut" :
         serpent.insert(0,
-        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green", outline = 'green'))
+        TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
         coordonnees_serpent.insert(0,(i,j-1))
 
 
     elif direction == "bas" :
         serpent.insert(0,
-        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green", outline = 'green'))
+        TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
         coordonnees_serpent.insert(0,(i,j+1))
 
 
     elif direction == "droite" :
         serpent.insert(0,
-        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green", outline = 'green'))
+        TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
         coordonnees_serpent.insert(0,(i+1,j))
 
     elif direction == "gauche" :
         serpent.insert(0,
-        TERRAIN.create_rectangle(i* 30, j * 30, i * 30+ 30, j * 30 + 30, fill = "green", outline = 'green'))
+        TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
         coordonnees_serpent.insert(0,(i-1,j))
 
 
@@ -669,12 +691,13 @@ def commencer():
     fonction_mur()
     gestion_mur_terrain()
     creer_premiere_pomme()
+    premiere_lecture()
 
 
 
 #################################################################################
 #################################################################################
-# creation du menu
+# programe principal - creation du menu
 #################################################################################
 #################################################################################
 
