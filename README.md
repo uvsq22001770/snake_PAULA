@@ -9,14 +9,14 @@ La partie se termine lorsque vous heurtez un mur ou mordez votre propre queue.
 Lors du lancement du programme, vous avez accès à un menu qui vous donne le choix du niveau de difficulté du terrain ainsi que de votre vitesse ( vous pouvez également en saisir une vous-même ).
 Le nombre de pommes que vous mangez est comptabilisé dans un fichier où seuls les scores des 10 meilleurs mangeurs apparaissent.
 
-Vous pouvez également trouver ces informations dans le menu ""Règles du jeu" unz fois le programme lancé.
+Vous pouvez également trouver ces informations dans le menu ""Règles du jeu" une fois le programme lancé.
 
 
 
 PRECISIONS SUR LE PROGRAMME
 
 
-La taille du terrain est à titre indicatif, le code fonctionne quelles que soient les dimensions chosisies.
+La taille du terrain est à titre indicatif, le code fonctionne quelles que soient les dimensions choisies.
 
 L'unité des vitesses a été choisie après reflexion au sujet de la cohérence des données : une vitesse en mouvements par seconde aurait donné suite à des valeurs numériques décimales, ce qui explique le choix d'une unité en millisecondes par mouvement.
 
