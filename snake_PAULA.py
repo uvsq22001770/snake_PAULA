@@ -20,8 +20,8 @@ import random as rd
 #########################################
 
 coté = 30
-LARGEUR= 600
-HAUTEUR = 420
+LARGEUR= 20 * coté
+HAUTEUR = 14 * coté
 COULEUR_QUADR = "grey60"
 
 #########################################
@@ -171,9 +171,9 @@ def demarrer():
     score = 0
 
     serpent.extend(
-    [TERRAIN.create_rectangle(LARGEUR//2, HAUTEUR//2, LARGEUR//2+ coté, HAUTEUR//2 + coté, fill = "green", outline = 'green'),
-    TERRAIN.create_rectangle(LARGEUR//2, HAUTEUR//2, LARGEUR//2+ coté, HAUTEUR//2 + coté, fill = "green", outline = 'green'),
-    TERRAIN.create_rectangle(LARGEUR//2, HAUTEUR//2, LARGEUR//2+ coté, HAUTEUR//2 + coté, fill = "green", outline = 'green')]
+    [TERRAIN.create_rectangle(10 * coté, 7 * coté, 10 * coté+ coté, 7 * coté + coté, fill = "green", outline = 'green'),
+    TERRAIN.create_rectangle(10 * coté, 7 * coté, 10 * coté+ coté, 7 * coté + coté, fill = "green", outline = 'green'),
+    TERRAIN.create_rectangle(10 * coté, 7 * coté, 10 * coté+ coté, 7 * coté + coté, fill = "green", outline = 'green')]
     )  
     coordonnees_serpent=[(10,7),(10,7),(10,7)]
     mouvement()
@@ -445,8 +445,10 @@ def game_over():
 
     TERRAIN.after_cancel(id_after)
     id_text = []
-    id_text.extend([TERRAIN.create_rectangle((160,175),(440,225), fill = "black"),
-                    TERRAIN.create_text(300,200, text = "GAME OVER", fill = "red", font = ("Helvetica", 32))])
+    id_text.extend([TERRAIN.create_rectangle((coté * 160 //30,coté * 175 //30),
+                                            (coté * 440 //30, coté * 225 //30), fill = "black"),
+                    TERRAIN.create_text(coté * 300 //30,coté * 200 //30, text = "GAME OVER",
+                                        fill = "red", font = ("Helvetica", coté + 2))])
     
     demande_de_nom()
 
