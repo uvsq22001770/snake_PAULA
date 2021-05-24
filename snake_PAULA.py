@@ -21,7 +21,7 @@ import random as rd
 coté = 30
 LARGEUR= 20 * coté
 HAUTEUR = 14 * coté
-COULEUR_QUADR = "grey60"
+COULEUR_QUADR = "black"
 
 ##################################################################################
 # définition des variables globales
@@ -131,25 +131,13 @@ def fonction_mur():
 
     global murs, TERRAIN
 
-    for i in range(1,19):
-        murs.append(TERRAIN.create_rectangle(i*coté,0,(i+1)*coté,coté,fill='#814436'))
-        murs.append(TERRAIN.create_rectangle(i*coté,13*coté,(i+1)*coté,13 *coté + coté,fill='#814436'))
-        coordonnees_mur.append((i,0))
-        coordonnees_mur.append((i,13))
-
-    for i in range(5,13):
-        murs.append(TERRAIN.create_rectangle(i*coté,3*coté,(i+1)*coté,coté*3+coté,fill='#814436'))
-        coordonnees_mur.append((i,3))
-    
-    for j in range(14):
-        murs.append(TERRAIN.create_rectangle(0,j*coté,coté,(j+1)*coté,fill='#814436'))
-        murs.append(TERRAIN.create_rectangle(19 * coté,j*coté,19*coté+coté,(j+1)*coté,fill='#814436'))
-        coordonnees_mur.append((0,j))
-        coordonnees_mur.append((19,j))
-    
-    for j in range(4,6):
-        murs.append(TERRAIN.create_rectangle(5*coté,j*coté,coté+5*coté,(j+1)*coté,fill='#814436'))
-        coordonnees_mur.append((5,j))
+    fic = open("niveau 1", "r")
+    for ligne in fic :
+       var = ligne
+       liste = var.split(",")
+       (i, j) = (int(liste[0]), int(liste[1]))  
+       murs.append(TERRAIN.create_rectangle(i*coté,j*coté,(i+1)*coté,(j+1)*coté,fill='#814436'))
+       coordonnees_mur.append((i,j)) 
 
 
 def murs_2():
@@ -157,31 +145,27 @@ def murs_2():
 
     global murs, TERRAIN
 
-    for i in range(12,16):
-        murs.append(TERRAIN.create_rectangle(i*coté,7*coté,(i+1)*coté,coté+7*coté,fill='#814436'))
-        coordonnees_mur.append((i,7))
-    
-    for j in range(4,7):
-        murs.append(TERRAIN.create_rectangle(12*coté,j*coté,coté+12*coté,(j+1)*coté,fill='#814436'))
-        coordonnees_mur.append((12,j))
+    fic = open("niveau 2", "r")
+    for ligne in fic :
+       var = ligne
+       liste = var.split(",")
+       (i, j) = (int(liste[0]), int(liste[1]))  
+       murs.append(TERRAIN.create_rectangle(i*coté,j*coté,(i+1)*coté,(j+1)*coté,fill='#814436'))
+       coordonnees_mur.append((i,j)) 
 
 
 def murs_3():
-    """Création des murs du niveau 3"""
+   """Création des murs du niveau 3"""
 
-    global murs, TERRAIN
+   global murs, TERRAIN
 
-    for i in range(3,6):
-        murs.append(TERRAIN.create_rectangle(i*coté,6*coté,(i+1)*coté,coté+6*coté,fill='#814436'))
-        coordonnees_mur.append((i,6))
-    
-    for i in range(13,17):
-        murs.append(TERRAIN.create_rectangle(i*coté,10*coté,(i+1)*coté,coté+10*coté,fill='#814436'))
-        coordonnees_mur.append((i,10))
-    
-    for j in range(6,11):
-        murs.append(TERRAIN.create_rectangle(8*coté,j*coté,coté+8*coté,(j+1)*coté,fill='#814436'))
-        coordonnees_mur.append((8,j))
+   fic = open("niveau 3", "r")
+   for ligne in fic :
+       var = ligne
+       liste = var.split(",")
+       (i, j) = (int(liste[0]), int(liste[1]))  
+       murs.append(TERRAIN.create_rectangle(i*coté,j*coté,(i+1)*coté,(j+1)*coté,fill='#814436'))
+       coordonnees_mur.append((i,j)) 
     
 
 def gestion_mur_terrain():
@@ -740,9 +724,8 @@ def commencer():
     fenetre.bind("<KeyPress-Right>", droite)
     fenetre.bind("<KeyPress-Left>", gauche)
 
-    #quadrillage() (la fonction peut etre ajoutée ici pour faire apparaitre la quadrillage)
+    #quadrillage() #(la fonction peut etre ajoutée ici pour faire apparaitre le quadrillage)
     demarrer()
-    fonction_mur()
     gestion_mur_terrain()
     creer_premiere_pomme()
     premiere_lecture()
