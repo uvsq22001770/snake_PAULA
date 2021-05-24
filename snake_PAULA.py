@@ -78,8 +78,8 @@ def creer_premiere_pomme():
     pomme = []
     POMME = []
 
-    i=rd.randint(1,18)
-    j=rd.randint(1,12)
+    i = rd.randint(1,18)
+    j = rd.randint(1,12)
     
     #la pomme ne peut pas apparaitre dans le serpent
     if (i,j) in coordonnees_serpent :
@@ -276,18 +276,18 @@ def mouvement():
 
     #le serpent s'arrête lorsqu'il touche le mur
     if coordonnees_serpent[-1] in coordonnees_mur:
-        game_over()
+        id_after = TERRAIN.after(1, game_over)
     
     #le serpent s'arrête lorsqu'il se touche lui même
     elif coordonnees_serpent[-1] in l1 :
-        game_over()
+        id_after = TERRAIN.after(1, game_over)
      
     #le serpent s'aggrandit quand il touche une pomme
-    elif coordonnees_serpent[-2] in pomme:
+    if coordonnees_serpent[-2] in pomme:
         aggrandir_serpent()
         augmenter_score()
         creer_pommes()
-        id_after = TERRAIN.after(vitesse_serpent,mouvement)
+        id_after = TERRAIN.after(vitesse_serpent, mouvement)
 
     #if case de devant est vide
     else:
@@ -381,8 +381,8 @@ def creer_pommes():
     """creation de pommes une fois que le serpent a mangé la première"""
     global POMME
     global coordonnees_mur
-    i=rd.randint(1,18)
-    j=rd.randint(1,12)
+    i = rd.randint(1,18)
+    j = rd.randint(1,12)
 
     #la pomme ne peut apparaître sur le corps du serpent
     if (i,j) in coordonnees_serpent:
