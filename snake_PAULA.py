@@ -1,4 +1,4 @@
-#########################################
+##################################################################################
 # groupe LDDMP 3
 # Ismaël RAIS
 # Ines ROSENTHAL
@@ -7,25 +7,26 @@
 # Quentin ASSIE
 # Paula POP
 # https://github.com/uvsq22001770/Projet_2.git
-#########################################
+##################################################################################
 
 import tkinter as tk
 import random as rd 
- 
 
-#########################################
-#########################################
-# définition des constantes
-#########################################
-#########################################
+##################################################################################
+##################################################################################
+# CONSTANTES
+##################################################################################
+##################################################################################
 
 coté = 30
 LARGEUR= 20 * coté
 HAUTEUR = 14 * coté
 COULEUR_QUADR = "grey60"
 
-#########################################
+##################################################################################
 # définition des variables globales
+##################################################################################
+
 direction = 0
 buffer = 0
 score = 0
@@ -46,14 +47,15 @@ liste_username_score=[ ["Username", 0], ["Username", 0],
    ["Username", 0], ["Username", 0], ["Username", 0], ["Username", 0],
    ["Username", 0], ["Username", 0], ["Username", 0] ]
 
-#########################################
-# définition des fonctions
 
-
-#fonction quadrillage qui doit disparaitre
+##################################################################################
+##################################################################################
+# FONCTIONS
+##################################################################################
+##################################################################################
 
 def quadrillage():
-    """ATTENTION le quadrillage doit disparaitre pour le rendu final"""
+    """Création du quadrillage ( qui disparaîtra par la suite )"""
 
     y = 0
     while y <= HAUTEUR:
@@ -65,12 +67,14 @@ def quadrillage():
         x += coté
 
  
-#################################################################################
-# debut du snake- pomme - murs - serpent
-#################################################################################
+##################################################################################
+# définition éléments du snake
+##################################################################################
+
 
 def creer_premiere_pomme():
-    """creation de la premiere pomme du terrain"""
+    """Création de la première pomme du terrain"""
+    
     global pomme
     global POMME
     global coordonnees_mur
@@ -81,11 +85,11 @@ def creer_premiere_pomme():
     i = rd.randint(1,18)
     j = rd.randint(1,12)
     
-    #la pomme ne peut pas apparaitre dans le serpent
+    # la pomme ne peut pas apparaitre dans le serpent
     if (i,j) in coordonnees_serpent :
         creer_premiere_pomme()
     
-    #la pomme ne peut pas apparaître sur un mur interne
+    # la pomme ne peut pas apparaître sur un mur interne
     elif (i,j) in coordonnees_mur :
         creer_premiere_pomme()
     
@@ -94,293 +98,12 @@ def creer_premiere_pomme():
         POMME=TERRAIN.create_oval(i*coté, j*coté, (i*coté) + coté, (j*coté) + coté, fill = "red")
 
 
-def fonction_mur():
-    """creation des murs qui encadrent le terrain et du niveau 1"""
-    global murs, TERRAIN
-    for i in range(1,19):
-        murs.append(TERRAIN.create_rectangle(i*coté,0,(i+1)*coté,coté,fill='#814436'))
-        murs.append(TERRAIN.create_rectangle(i*coté,13*coté,(i+1)*coté,13 *coté + coté,fill='#814436'))
-        coordonnees_mur.append((i,0))
-        coordonnees_mur.append((i,13))
-    for i in range(5,13):
-        murs.append(TERRAIN.create_rectangle(i*coté,3*coté,(i+1)*coté,coté*3+coté,fill='#814436'))
-        coordonnees_mur.append((i,3))
-    for j in range(14):
-        murs.append(TERRAIN.create_rectangle(0,j*coté,coté,(j+1)*coté,fill='#814436'))
-        murs.append(TERRAIN.create_rectangle(19 * coté,j*coté,19*coté+coté,(j+1)*coté,fill='#814436'))
-        coordonnees_mur.append((0,j))
-        coordonnees_mur.append((19,j))
-    for j in range(4,6):
-        murs.append(TERRAIN.create_rectangle(5*coté,j*coté,coté+5*coté,(j+1)*coté,fill='#814436'))
-        coordonnees_mur.append((5,j))
-  
-def murs_2():
-    """creation des murs du niveau 2"""
-    global murs, TERRAIN
-    for i in range(12,16):
-        murs.append(TERRAIN.create_rectangle(i*coté,7*coté,(i+1)*coté,coté+7*coté,fill='#814436'))
-        coordonnees_mur.append((i,7))
-    for j in range(4,7):
-        murs.append(TERRAIN.create_rectangle(12*coté,j*coté,coté+12*coté,(j+1)*coté,fill='#814436'))
-        coordonnees_mur.append((12,j))
-
-def murs_3():
-    """creation des murs du niveau 3"""
-    global murs, TERRAIN
-    for i in range(3,6):
-        murs.append(TERRAIN.create_rectangle(i*coté,6*coté,(i+1)*coté,coté+6*coté,fill='#814436'))
-        coordonnees_mur.append((i,6))
-    for i in range(13,17):
-        murs.append(TERRAIN.create_rectangle(i*coté,10*coté,(i+1)*coté,coté+10*coté,fill='#814436'))
-        coordonnees_mur.append((i,10))
-    for j in range(6,11):
-        murs.append(TERRAIN.create_rectangle(8*coté,j*coté,coté+8*coté,(j+1)*coté,fill='#814436'))
-        coordonnees_mur.append((8,j))
-    
-
-def gestion_mur_terrain():
-    """fonction qui asocie le choix du niveau aux foncions de creation des murs"""
-    global coordonnees_mur
-    global murs
-    if variable_mur == 1:        
-        murs = []
-        coordonnees_mur = []
-        fonction_mur()
-    elif variable_mur == 2:   
-        murs = []
-        coordonnees_mur = []
-        fonction_mur()
-        murs_2()
-    elif variable_mur == 3:      
-        murs = []
-        coordonnees_mur = []
-        fonction_mur()
-        murs_2()
-        murs_3()
-
-def demarrer():
-    """fonction qui commence le jeu avec un serpent au milieu"""   
-    global serpent
-    global coordonnees_serpent
-    global direction
-    global score
-
-    serpent = []
-    coordonnees_serpent = []
-    direction = 0
-    score = 0
-
-    serpent.extend(
-    [TERRAIN.create_rectangle(10 * coté, 7 * coté, 10 * coté+ coté, 7 * coté + coté, fill = "green", outline = 'green'),
-    TERRAIN.create_rectangle(10 * coté, 7 * coté, 10 * coté+ coté, 7 * coté + coté, fill = "green", outline = 'green'),
-    TERRAIN.create_rectangle(10 * coté, 7 * coté, 10 * coté+ coté, 7 * coté + coté, fill = "green", outline = 'green')]
-    )  
-    coordonnees_serpent=[(10,7),(10,7),(10,7)]
-    mouvement()
-
-
-#################################################################################
-# mouvement du serpent - boucle after
-#################################################################################
-
-
-#controle direction du serpent
-def haut(event):
-    """change la direction du serpent"""
-    global buffer
-    if direction != "bas":
-        buffer = "haut"
-
-def bas(event):
-    """change la direction du serpent"""
-    global buffer
-    if direction != "haut":
-        buffer = "bas"
-
-def droite(event):
-    """change la direction du serpent"""
-    global buffer
-    if direction != "gauche":
-        buffer = "droite"
-
-def gauche(event):
-    """change la direction du serpent"""
-    global buffer
-    if direction != "droite":
-        buffer = "gauche"
-
-
-
-def etape_mouvement(i,j):
-    """fonction qui fait bouger le serpent d une case dans la direction indiquée"""
-    global direction
-    global l1
-    global coordonnees_serpent
-
-    l1 = coordonnees_serpent[0:-3]
-
-    if buffer == 0 :
-        pass
-
-    elif buffer == "haut" :
-        serpent.append(
-        TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
-
-        TERRAIN.delete(serpent[0])
-        del serpent[0]
-        coordonnees_serpent.append((i,j-1))
-        del coordonnees_serpent[0]
-        
-        direction = "haut"
-
-    elif buffer == "bas" :
-        serpent.append(
-        TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
-
-        TERRAIN.delete(serpent[0])
-        del serpent[0]
-        coordonnees_serpent.append((i,j+1))
-        del coordonnees_serpent[0]
-        direction = "bas"
-
-
-    elif buffer == "droite" :
-        serpent.append(
-        TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
-
-        TERRAIN.delete(serpent[0])
-        del serpent[0]
-        coordonnees_serpent.append((i+1,j))
-        del coordonnees_serpent[0]
-        
-        direction = "droite"
-
-
-    elif buffer == "gauche" :
-        serpent.append(
-        TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
-        
-        TERRAIN.delete(serpent[0])
-        del serpent[0]
-        coordonnees_serpent.append((i-1,j))
-        del coordonnees_serpent[0]
-
-        direction = "gauche"
-
-
-def mouvement():
-    """fonction qui fait bouger le serpent et fait le test en cas de victoire/defaite"""
-    global id_after
-    (i,j) = coordonnees_serpent[-1]
-    etape_mouvement(i,j)
-
-    #le serpent s'arrête lorsqu'il touche le mur
-    if coordonnees_serpent[-1] in coordonnees_mur:
-        id_after = TERRAIN.after(1, game_over)
-    
-    #le serpent s'arrête lorsqu'il se touche lui même
-    elif coordonnees_serpent[-1] in l1 :
-        id_after = TERRAIN.after(1, game_over)
-     
-    #le serpent s'aggrandit quand il touche une pomme
-    if coordonnees_serpent[-2] in pomme:
-        aggrandir_serpent()
-        augmenter_score()
-        creer_pommes()
-        id_after = TERRAIN.after(vitesse_serpent, mouvement)
-
-    #if case de devant est vide
-    else:
-        id_after = TERRAIN.after(vitesse_serpent, mouvement)
-
-
-#################################################################################
-# snake mange une pomme - creer nouvelle pomme - agrandir snake - augmenter score
-# ecrire dans le fichier texte
-#################################################################################
-
-def augmenter_score():
-    """augmente le score et change le texte indiquant le score"""
-    global label_score
-    global score
-
-    score += 1
-    label_score.config(text= "score : " + str(score))
-
-
-
-#################################################################################
-# ecriture dans le fichier texte
-def premiere_lecture():
-    """premiere lecture du fichier texte si il existe"""
-    global test_premiere_lecture
-    if test_premiere_lecture == 0 :
-        test_premiere_lecture = 1
-        fic = open("tab_scores", "r")
-        j = 1
-        for ligne in fic:
-            j *= -1
-            if j == -1 :
-                var = ligne 
-                liste = var.split("\n")
-                nom = liste[0]
-                
-            elif j == 1 :
-                liste_username_score.append([nom, int(ligne)])
-
-def liste():
-    """fonction qui ajoute le nom et le score du joueur a la liste"""
-    global pseudos_joueur
-    global score
-    global liste_username_score
-    while pseudos_joueur != [] :
-        liste_username_score.extend([[pseudos_joueur[0], score]])
-        pseudos_joueur.remove(pseudos_joueur[0])
-        score = 0
-
-def score_trie(N):
-    """clef pour tirer les scores par ordre croissant"""
-    return N[1]
-
-def liste_triee():
-    """trie la liste des scores"""
-    global liste_username_score
-    liste_username_score = sorted(liste_username_score, reverse = True, key=score_trie)
-
-def ecrire():
-    """ecris la liste des scores dans le fichier texte"""
-    global liste_username_score
-    L = liste_username_score
-    fic = open("tab_scores", "w")
-    for i in range(20):
-        if i % 2 == 0: 
-            fic.write(str(L[i//2][0]) + "\n" + str(L[i//2][1]) + "\n")
-    fic.close()
-
-
-
-def lire():
-    """lis le fichier texte et crée le texte du tableau des scores"""
-    global f
-    j = 1
-    i = 1
-    fic = open("tab_scores","r")
-    for ligne in fic:
-        j *= -1
-        if j == 1:
-            i += 1
-            label= tk.Label(f, text=(nom + ligne), font=("Helvetica", "10"), bg="dark green", fg="white")
-            label.grid(row = i)
-        elif j == -1:
-            nom = ligne    
-    fic.close()    
-
-#################################################################################
- 
 def creer_pommes():
-    """creation de pommes une fois que le serpent a mangé la première"""
+    """Création des pommes une fois que le serpent a mangé la première"""
+
     global POMME
     global coordonnees_mur
+
     i = rd.randint(1,18)
     j = rd.randint(1,12)
 
@@ -403,9 +126,222 @@ def creer_pommes():
         POMME=TERRAIN.create_oval(i*coté, j*coté, (i*coté)+coté, (j*coté)+coté, fill = "red")
 
 
+def fonction_mur():
+    """Création des murs qui encadrent le terrain et le niveau 1"""
+
+    global murs, TERRAIN
+
+    for i in range(1,19):
+        murs.append(TERRAIN.create_rectangle(i*coté,0,(i+1)*coté,coté,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(i*coté,13*coté,(i+1)*coté,13 *coté + coté,fill='#814436'))
+        coordonnees_mur.append((i,0))
+        coordonnees_mur.append((i,13))
+
+    for i in range(5,13):
+        murs.append(TERRAIN.create_rectangle(i*coté,3*coté,(i+1)*coté,coté*3+coté,fill='#814436'))
+        coordonnees_mur.append((i,3))
+    
+    for j in range(14):
+        murs.append(TERRAIN.create_rectangle(0,j*coté,coté,(j+1)*coté,fill='#814436'))
+        murs.append(TERRAIN.create_rectangle(19 * coté,j*coté,19*coté+coté,(j+1)*coté,fill='#814436'))
+        coordonnees_mur.append((0,j))
+        coordonnees_mur.append((19,j))
+    
+    for j in range(4,6):
+        murs.append(TERRAIN.create_rectangle(5*coté,j*coté,coté+5*coté,(j+1)*coté,fill='#814436'))
+        coordonnees_mur.append((5,j))
+
+
+def murs_2():
+    """Création des murs du niveau 2"""
+
+    global murs, TERRAIN
+
+    for i in range(12,16):
+        murs.append(TERRAIN.create_rectangle(i*coté,7*coté,(i+1)*coté,coté+7*coté,fill='#814436'))
+        coordonnees_mur.append((i,7))
+    
+    for j in range(4,7):
+        murs.append(TERRAIN.create_rectangle(12*coté,j*coté,coté+12*coté,(j+1)*coté,fill='#814436'))
+        coordonnees_mur.append((12,j))
+
+
+def murs_3():
+    """Création des murs du niveau 3"""
+
+    global murs, TERRAIN
+
+    for i in range(3,6):
+        murs.append(TERRAIN.create_rectangle(i*coté,6*coté,(i+1)*coté,coté+6*coté,fill='#814436'))
+        coordonnees_mur.append((i,6))
+    
+    for i in range(13,17):
+        murs.append(TERRAIN.create_rectangle(i*coté,10*coté,(i+1)*coté,coté+10*coté,fill='#814436'))
+        coordonnees_mur.append((i,10))
+    
+    for j in range(6,11):
+        murs.append(TERRAIN.create_rectangle(8*coté,j*coté,coté+8*coté,(j+1)*coté,fill='#814436'))
+        coordonnees_mur.append((8,j))
+    
+
+def gestion_mur_terrain():
+    """Associe le choix du niveau aux fonctions de création des murs"""
+
+    global coordonnees_mur
+    global murs
+
+    if variable_mur == 1:        
+        murs = []
+        coordonnees_mur = []
+        fonction_mur()
+    elif variable_mur == 2:   
+        murs = []
+        coordonnees_mur = []
+        fonction_mur()
+        murs_2()
+    elif variable_mur == 3:      
+        murs = []
+        coordonnees_mur = []
+        fonction_mur()
+        murs_2()
+        murs_3()
+
+
+def demarrer():
+    """Fonction qui commence le jeu avec un serpent au milieu"""
+
+    global serpent
+    global coordonnees_serpent
+    global direction
+    global score
+
+    serpent = []
+    coordonnees_serpent = []
+    direction = 0
+    score = 0
+
+    serpent.extend(
+    [TERRAIN.create_rectangle(10 * coté, 7 * coté, 10 * coté+ coté, 7 * coté + coté, fill = "green", outline = 'green'),
+    TERRAIN.create_rectangle(10 * coté, 7 * coté, 10 * coté+ coté, 7 * coté + coté, fill = "green", outline = 'green'),
+    TERRAIN.create_rectangle(10 * coté, 7 * coté, 10 * coté+ coté, 7 * coté + coté, fill = "green", outline = 'green')]
+    )
+    coordonnees_serpent=[(10,7),(10,7),(10,7)]
+    mouvement()
+
+
+##################################################################################
+# fonctions mouvements du serpent
+##################################################################################
+
+
+def haut(event):
+    """Déplace le serpent vers le haut"""
+    global buffer
+    if direction != "bas":
+        buffer = "haut"
+
+
+def bas(event):
+    """Déplace le serpent vers le bas"""
+    global buffer
+    if direction != "haut":
+        buffer = "bas"
+
+
+def droite(event):
+    """Déplace le serpent vers la droite"""
+    global buffer
+    if direction != "gauche":
+        buffer = "droite"
+
+
+def gauche(event):
+    """Déplace le serpent vers la gauche"""
+    global buffer
+    if direction != "droite":
+        buffer = "gauche"
+
+
+def etape_mouvement(i,j):
+    """Fonction qui fait bouger le serpent d'une case dans la direction indiquée"""
+
+    global direction
+    global l1
+    global coordonnees_serpent
+
+    l1 = coordonnees_serpent[0:-3]
+
+    if buffer == 0 :
+        pass
+
+    elif buffer == "haut" :
+        serpent.append(
+        TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
+        TERRAIN.delete(serpent[0])
+        del serpent[0]
+        coordonnees_serpent.append((i,j-1))
+        del coordonnees_serpent[0]
+        direction = "haut"
+
+    elif buffer == "bas" :
+        serpent.append(
+        TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
+        TERRAIN.delete(serpent[0])
+        del serpent[0]
+        coordonnees_serpent.append((i,j+1))
+        del coordonnees_serpent[0]
+        direction = "bas"
+
+    elif buffer == "droite" :
+        serpent.append(
+        TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
+        TERRAIN.delete(serpent[0])
+        del serpent[0]
+        coordonnees_serpent.append((i+1,j))
+        del coordonnees_serpent[0]
+        direction = "droite"
+
+    elif buffer == "gauche" :
+        serpent.append(
+        TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
+        TERRAIN.delete(serpent[0])
+        del serpent[0]
+        coordonnees_serpent.append((i-1,j))
+        del coordonnees_serpent[0]
+        direction = "gauche"
+
+
+def mouvement():
+    """Fonction qui fait bouger le serpent et fait le test en cas de victoire ou défaite"""
+
+    global id_after
+
+    (i,j) = coordonnees_serpent[-1]
+    etape_mouvement(i,j)
+
+    # le serpent s'arrête lorsqu'il touche le mur
+    if coordonnees_serpent[-1] in coordonnees_mur:
+        id_after = TERRAIN.after(1, game_over)
+    
+    # le serpent s'arrête lorsqu'il se touche lui même
+    elif coordonnees_serpent[-1] in l1 :
+        id_after = TERRAIN.after(1, game_over)
+     
+    # le serpent s'aggrandit lorsqu'il touche une pomme
+    if coordonnees_serpent[-2] in pomme:
+        aggrandir_serpent()
+        augmenter_score()
+        creer_pommes()
+        id_after = TERRAIN.after(vitesse_serpent, mouvement)
+
+    # si la case de devant est vide
+    else:
+        id_after = TERRAIN.after(vitesse_serpent, mouvement)
+
 
 def aggrandir_serpent():
-    """le corps du serpent s'aggrandit d'un rectangle"""
+    """Le corps du serpent s'aggrandit d'un rectangle"""
+
     (i,j)=coordonnees_serpent[0]
     
     if direction==0 :
@@ -416,12 +352,10 @@ def aggrandir_serpent():
         TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
         coordonnees_serpent.insert(0,(i,j-1))
 
-
     elif direction == "bas" :
         serpent.insert(0,
         TERRAIN.create_rectangle(i* coté, j * coté, i * coté+ coté, j * coté + coté, fill = "green", outline = 'green'))
         coordonnees_serpent.insert(0,(i,j+1))
-
 
     elif direction == "droite" :
         serpent.insert(0,
@@ -434,12 +368,14 @@ def aggrandir_serpent():
         coordonnees_serpent.insert(0,(i-1,j))
 
 
-#################################################################################
-# snake prends un mur - game over
-#################################################################################
+##################################################################################
+# fonctions game over : si snake rentre dans un mur ou se mord la queue
+##################################################################################
+
 
 def game_over():
-    """affiche le message game over sur snake et ouvre la fenetre qui demande le nom """
+    """Affiche le message game over sur snake et ouvre la fenetre qui demande le nom"""
+
     global id_after
     global id_text
 
@@ -452,10 +388,13 @@ def game_over():
     
     demande_de_nom()
 
+
 def transition_vers_menu():
-    """supprime toutes les variables de snake"""
+    """Supprime toutes les variables de snake"""
+
     global id_text
     global serpent, coordonnees_serpent, coordonnees_mur, murs, buffer
+
     buffer = 0
     coordonnees_serpent = []
     for i in serpent:
@@ -468,17 +407,114 @@ def transition_vers_menu():
     TERRAIN.delete(id_text[1])
 
 
-#################################################################################
-#################################################################################
-# fonctions du menu 
-#################################################################################
-#################################################################################
+##################################################################################
+# fonctions liées au score et à son écriture dans un fichier
+##################################################################################
+
+
+def augmenter_score():
+    """augmente le score et change le texte indiquant le score"""
+
+    global label_score
+    global score
+
+    score += 1
+    label_score.config(text= "score : " + str(score))
+
+
+def premiere_lecture():
+    """Première lecture du fichier texte s'il existe"""
+
+    global test_premiere_lecture
+
+    if test_premiere_lecture == 0 :
+        test_premiere_lecture = 1
+        fic = open("tab_scores", "r")
+        j = 1
+        for ligne in fic:
+            j *= -1
+            if j == -1 :
+                var = ligne 
+                liste = var.split("\n")
+                nom = liste[0]
+                
+            elif j == 1 :
+                liste_username_score.append([nom, int(ligne)])
+
+
+def liste():
+    """Fonction qui ajoute le nom et le score du joueur à la liste"""
+
+    global pseudos_joueur
+    global score
+    global liste_username_score
+
+    while pseudos_joueur != [] :
+        liste_username_score.extend([[pseudos_joueur[0], score]])
+        pseudos_joueur.remove(pseudos_joueur[0])
+        score = 0
+
+
+def score_trie(N):
+    """Clé pour tirer les scores par ordre croissant"""
+
+    return N[1]
+
+
+def liste_triee():
+    """Trie la liste des scores"""
+
+    global liste_username_score
+
+    liste_username_score = sorted(liste_username_score, reverse = True, key=score_trie)
+
+
+def ecrire():
+    """Ecrit la liste des scores dans le fichier texte"""
+
+    global liste_username_score
+
+    L = liste_username_score
+    fic = open("tab_scores", "w")
+    for i in range(20):
+        if i % 2 == 0: 
+            fic.write(str(L[i//2][0]) + "\n" + str(L[i//2][1]) + "\n")
+    fic.close()
+
+
+def lire():
+    """Lit le fichier texte et crée le texte du tableau des scores"""
+
+    global f
+
+    j = 1
+    i = 1
+    fic = open("tab_scores","r")
+    for ligne in fic:
+        j *= -1
+        if j == 1:
+            i += 1
+            label= tk.Label(f, text=(nom + ligne), font=("Helvetica", "10"), bg="dark green", fg="white")
+            label.grid(row = i)
+        elif j == -1:
+            nom = ligne    
+    fic.close()
+
+
+##################################################################################
+##################################################################################
+# MENU
+##################################################################################
+##################################################################################
 
 def valider(event):
-    "fonction qui demande une vitesse au joueur"
+    "Fonction qui demande une vitesse au joueur"
+
     global vitesse_serpent
     global liste_vitesse
+
     vitesse_serpent_test = demande_vitesse.get()
+
     if vitesse_serpent_test.isdigit():
         if float(vitesse_serpent_test) == float(200):
             vitesse_serpent = demande_vitesse.get()
@@ -505,9 +541,11 @@ def valider(event):
         
 
 def choix_vitesse():
-    """#attention pas de docstring"""
+    """Attribue une vitesse au serpent"""
+
     global vitesse_serpent
     global variable_vitesse
+
     if (vit.get()==0):
         vitesse_serpent=700
         variable_vitesse=1
@@ -523,8 +561,10 @@ def choix_vitesse():
 
 
 def choix_niveau():
-    """intègre des murs à l'interieur du terrain selon le niveau de difficulté"""
+    """Intègre des murs à l'intérieur du terrain selon le niveau de difficulté"""
+
     global variable_mur
+
     if (niv.get()==0):
         variable_mur=1
     elif (niv.get()==1):
@@ -532,9 +572,12 @@ def choix_niveau():
     elif (niv.get()==2):
         variable_mur=3
 
+
 def deselectionner():
-    """#attention pas de docstring"""
+    """Déselectionne les boutons enclenchés"""
+
     global variable_vitesse
+
     if variable_vitesse == 1:
         liste_vitesse[0].deselect()
     elif variable_vitesse == 2:
@@ -544,13 +587,16 @@ def deselectionner():
 
 
 def demande_de_nom():
-    "fonction qui ouvre une fenêtre qui demande le pseudo du joeur"
+    "Fonction qui ouvre une fenêtre qui demande le pseudo du joueur"
+
     demander_nom = tk.Tk()
     demander_nom.title("Le nom du joueur")
 
     def fermeture_fenetre(event):
-        "fonction qui ferme la fenêtre si le joueur valide son pseudo"
+        "Fonction qui ferme la fenêtre si le joueur valide son pseudo"
+
         global pseudos_joueur
+
         transition_vers_menu()
         pseudos_joueur.append(Saisie_nom.get())
         Saisie_nom.delete(0,20)
@@ -565,8 +611,8 @@ def demande_de_nom():
     frame0.pack()
 
     Label_nom = tk.Label(frame0,text="What's your username?",font=('Helvetica',15),bg='dark green', fg="chartreuse3")
-    Label_instruction = tk.Label(frame0,text='20 characters only',font=('Helvetica',12),bg='dark green',fg='orange red')
-    Label_instruction2 = tk.Label(frame0,text='Press Enter to confirm',font=('Helvetica',12),bg='dark green', fg="chartreuse3")
+    Label_instruction = tk.Label(frame0,text='20 characters only',font=('Helvetica',12),bg='dark green',fg='chartreuse3')
+    Label_instruction2 = tk.Label(frame0,text='PRESS ENTER TO CONFIRM',font=('Helvetica',8),bg='dark green', fg="chartreuse3")
     Saisie_nom = tk.Entry(frame0, bg='dark green', fg='chartreuse3', width=20, font=('Helvetica',14))
 
     Label_nom.pack(pady=10)
@@ -577,19 +623,19 @@ def demande_de_nom():
     demander_nom.bind('<KeyPress-Return>', fermeture_fenetre)
     demander_nom.mainloop()
 
-    
 
-#################################################################################
-# fenetre des regles du jeu
-#################################################################################
+##################################################################################
+# fenêtre des règles du jeu
+##################################################################################
+
 
 def comment_jouer():
-    """fonction qui ouvre une fenetre d'instructions"""
+    """Fonction qui ouvre une fenêtre d'instructions"""
+
     f1 = tk.Toplevel(root)
     f1.title("Règles du jeu")
-    f1.geometry("815x550")
+    f1.geometry("768x550")
     f1.resizable(height=False, width=False)
-
 
     rule = tk.Frame(f1, bg="dark green", padx=40, pady=40)
     rule.pack()
@@ -619,7 +665,7 @@ def comment_jouer():
     consigne = tk.Label(rule, text="Le but est de manger la pomme.",
                                 font=("Helvetica", "10"), bg="dark green", fg="chartreuse3")
 
-    consigne_1 = tk.Label(rule, text="Lorsqu’elle est mangée, une autre pomme apparaît sur une case aléatoire du plateau, et la longueur du serpent augmente de 1.",
+    consigne_1 = tk.Label(rule, text="Lorsqu’elle est mangée, une autre pomme apparaît sur une case aléatoire du plateau, et le serpent grandit d'une case.",
                                 font=("Helvetica", "10"), bg="dark green", fg="chartreuse3")
 
     consigne_2 = tk.Label(rule, text="La partie s’arrête lorsque la tête du serpent percute un mur ou percute son propre corps.",
@@ -636,13 +682,17 @@ def comment_jouer():
 
     f1.mainloop()
 
-#################################################################################
-# fenetre du tableau des scores
-#################################################################################
+
+##################################################################################
+# fenêtre du tableau des scores
+##################################################################################
+
 
 def scores():
-    """fonction qui ouvre le tableau des scores et lis le fichier texte"""
+    """Fonction qui ouvre le tableau des scores et lit le fichier texte"""
+
     global f
+
     f = tk.Toplevel(root)
     f.title("Tableau des scores")
     f.geometry("500x600")
@@ -653,30 +703,35 @@ def scores():
     label_titre.grid(row = 0)
 
     lire()
- 
-#################################################################################
-# fenetre snake
-#################################################################################
+
+
+##################################################################################
+# fenêtre snake
+##################################################################################
+
+
 def bouton_commencer(event):
-    """fonction qui lie la pression sur espace et la fonction commencer"""
+    """Fonction qui lie la pression sur espace et la fonction commencer"""
+
     global vitesse_serpent
-    vitesse_serpent=200
-    variable_vitesse=3
+
+    vitesse_serpent = 200
+    variable_vitesse = 3
     deselectionner()
     valeur_vitesse['text'] = str(vitesse_serpent) +' ms/mvt'
     commencer()
 
+
 def commencer():
-    """fonction qui ouvre le jeu snake dans une fenetre a part"""
+    """Fonction qui ouvre le jeu snake dans une fenêtre à part"""
+
     global TERRAIN
     global label_score
     global fenetre
 
-    #creation de la fenetre
     fenetre = tk.Toplevel(root)
     fenetre.title("SNAKE")
 
-    #creation des widgets
     label_score= tk.Label(fenetre, text = "score : 0")
     label_score.grid(row = 0)
     TERRAIN = tk.Canvas(fenetre, height = HAUTEUR, width = LARGEUR, bg = "chartreuse3")
@@ -686,9 +741,7 @@ def commencer():
     fenetre.bind("<KeyPress-Down>", bas)
     fenetre.bind("<KeyPress-Right>", droite)
     fenetre.bind("<KeyPress-Left>", gauche)
-   
-    #programme principal
-    #quadrillage()
+
     demarrer()
     fonction_mur()
     gestion_mur_terrain()
@@ -696,12 +749,12 @@ def commencer():
     premiere_lecture()
 
 
+##################################################################################
+##################################################################################
+# PROGRAMME PRINCIPAL
+##################################################################################
+##################################################################################
 
-#################################################################################
-#################################################################################
-# programe principal - creation du menu
-#################################################################################
-#################################################################################
 
 root = tk.Tk()
 root.geometry("700x660")
@@ -713,9 +766,11 @@ frame_general.pack()
 titre = tk.Label(frame_general, text="SNAKE", font=("Helvetica", "28", "bold"), bg="dark green", fg="chartreuse3")
 titre.pack(anchor="n", pady=20)
 
-###################################################################################################
+
+##################################################################################
 # niveaux
-###################################################################################################
+##################################################################################
+
 
 titre_niveaux = tk.Label(frame_general, text="LEVELS", font=("Helvetica", "20", "bold"), bg="dark green", fg="chartreuse3")
 titre_niveaux.pack(pady=40)
@@ -738,9 +793,11 @@ for index in range(len(niveaux)):
                                     fg="chartreuse3")
     radiobutton_niveaux.pack(side="left", padx=20)
 
-###################################################################################################
+
+##################################################################################
 # vitesses
-###################################################################################################
+##################################################################################
+
 
 titre_vitesse = tk.Label(frame_general, text="SPEED", font=("Helvetica", "20", "bold"), bg="dark green", fg="chartreuse3")
 titre_vitesse.pack(pady=40)
@@ -751,8 +808,8 @@ frame2.pack()
 vitesses = ["Slow", "Normal", "Fast"]
 
 vit = tk.IntVar()
-#attention ce ne serait pas len(vitesse)??? ca ne change rien mais je crois que c est plus coherent?
-for index in range(len(niveaux)):
+
+for index in range(len(vitesses)):
     radiobutton_vitesses=tk.Radiobutton(frame2, text=vitesses[index], 
                                     variable=vit, 
                                     value=index, 
@@ -772,9 +829,10 @@ for index in range(len(niveaux)):
                                     fg="chartreuse3"))
 
 
-###################################################################################################
+##################################################################################
 # demande de la vitesse
-###################################################################################################
+##################################################################################
+
 
 frame3 = tk.Frame(frame_general, bg="dark green")
 frame3.pack()
@@ -794,15 +852,17 @@ unite_mouv.pack(side="left")
 frame4 = tk.Frame(frame_general, bg="dark green")
 frame4.pack()
 
-donne_vitesse = tk.Label(frame4, text='VOTRE VITESSE EST DE:', font=('Helvetica','16'), bg="dark green", fg='orange red')
+donne_vitesse = tk.Label(frame4, text='VOTRE VITESSE EST DE:', font=('Helvetica','16'), bg="dark green", fg='chartreuse3')
 donne_vitesse.pack(pady=15,side='left')
 
-valeur_vitesse = tk.Label(frame4, text= str(vitesse_serpent) + ' ms/mvt', font=('Helvetica','16'), bg="dark green", fg='orange red')
+valeur_vitesse = tk.Label(frame4, text= str(vitesse_serpent) + ' ms/mvt', font=('Helvetica','16'), bg="dark green", fg='chartreuse3')
 valeur_vitesse.pack(pady=15)
 
-#################################################################################
-# widgets du menu deroulant
-#################################################################################
+
+##################################################################################
+# widgets du menu déroulant
+##################################################################################
+
 
 mainmenu = tk.Menu(root)
 
@@ -823,17 +883,18 @@ mainmenu.add_cascade(label="Règles du jeu", menu=regles)
 mainmenu.add_cascade(label="Tableau des scores", menu=tab)
 mainmenu.add_cascade(label="Commencer", menu=debut)
 
-#################################################################################
-# gestion des evenements
-#################################################################################
+
+##################################################################################
+# gestion des évènements
+##################################################################################
+
+
 root.bind("<KeyPress-Up>", haut)
 root.bind("<KeyPress-Down>", bas)
 root.bind("<KeyPress-Right>", droite)
 root.bind("<KeyPress-Left>", gauche)
 root.bind('<KeyPress-Return>',valider)
 root.bind('<KeyPress-space>',bouton_commencer)
-
-# boucle principale
 
 root.config(menu=mainmenu)
 root.mainloop()
