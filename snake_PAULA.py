@@ -125,6 +125,57 @@ def creer_pommes():
         TERRAIN.delete(POMME)
         POMME=TERRAIN.create_oval(i*coté, j*coté, (i*coté)+coté, (j*coté)+coté, fill = "red")
 
+def fichier_1():
+    fic = open("niveau 1", "w")
+    j = 0
+    for i in range(1,19):
+        fic.write(str(i) + "," + str(j) + "\n")
+
+    j = 13
+    for i in range(1,19):
+        fic.write(str(i) + "," + str(j)+"\n")
+    
+    j = 3
+    for i in range(5,13):
+        fic.write(str(i) + "," + str(j)+"\n")
+    
+    i = 0
+    for j in range(14):
+        fic.write(str(i) + "," + str(j)+"\n")
+
+    i = 19
+    for j in range(14):
+        fic.write(str(i) + "," + str(j)+"\n")
+
+    i = 5
+    for j in range(4,6):
+        fic.write(str(i) + "," + str(j)+"\n")
+    fic.close()
+
+def fichier_2():
+    fic = open("niveau 2", "w")
+    j = 7
+    for i in range(12,16):
+        fic.write(str(i) + "," + str(j) + "\n")
+    i = 12
+    for j in range(4,7):
+        fic.write(str(i) + "," + str(j) + "\n")
+    fic.close()
+
+def fichier_3():
+    fic = open("niveau 3", "w")
+    j = 6  
+    for i in range(3,6):
+        fic.write(str(i) + "," + str(j) + "\n")
+
+    j = 10
+    for i in range(13,17):
+        fic.write(str(i) + "," + str(j) + "\n")
+
+    i = 8
+    for j in range(6,11):
+        fic.write(str(i) + "," + str(j) + "\n")
+    fic.close()
 
 def fonction_mur():
     """Création des murs qui encadrent le terrain et le niveau 1"""
@@ -741,6 +792,10 @@ def commencer():
 root = tk.Tk()
 root.geometry("700x660")
 root.title("Menu")
+
+fichier_1()
+fichier_2()
+fichier_3()
 
 frame_general = tk.Frame(root, bg="dark green", padx=50, pady=20)
 frame_general.pack()
