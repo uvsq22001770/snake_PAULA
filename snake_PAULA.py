@@ -266,10 +266,8 @@ def etape_mouvement(i,j):
     """Fonction qui fait bouger le serpent d'une case dans la direction indiquée"""
 
     global direction
-    global l1
     global coordonnees_serpent
 
-    l1 = coordonnees_serpent[0:-3]
 
     if buffer == 0 :
         pass
@@ -315,17 +313,17 @@ def mouvement():
     """Fonction qui fait bouger le serpent et fait le test en cas de victoire ou défaite"""
 
     global id_after
-
+    l1 = coordonnees_serpent[0:-3]
     (i,j) = coordonnees_serpent[-1]
     etape_mouvement(i,j)
 
     # le serpent s'arrête lorsqu'il touche le mur
     if coordonnees_serpent[-1] in coordonnees_mur:
-        id_after = TERRAIN.after(1, game_over)
+        TERRAIN.after(1, game_over)
     
     # le serpent s'arrête lorsqu'il se touche lui même
     elif coordonnees_serpent[-1] in l1 :
-        id_after = TERRAIN.after(1, game_over)
+        TERRAIN.after(1, game_over)
      
     # le serpent s'aggrandit lorsqu'il touche une pomme
     if coordonnees_serpent[-2] in pomme:
@@ -590,7 +588,7 @@ def demande_de_nom():
     "Fonction qui ouvre une fenêtre qui demande le pseudo du joueur"
 
     demander_nom = tk.Tk()
-    demander_nom.title("Le nom du joueur")
+    demander_nom.title("Player's name")
 
     def fermeture_fenetre(event):
         "Fonction qui ferme la fenêtre si le joueur valide son pseudo"
@@ -711,7 +709,7 @@ def scores():
 
 
 def bouton_commencer(event):
-    """Fonction qui lie la pression sur espace et la fonction commencer"""
+    """Demarre snake en vitess rapide en appuyant sur espace"""
 
     global vitesse_serpent
 
@@ -742,6 +740,7 @@ def commencer():
     fenetre.bind("<KeyPress-Right>", droite)
     fenetre.bind("<KeyPress-Left>", gauche)
 
+    #quadrillage() (la fonction peut etre ajoutée ici pour faire apparaitre la quadrillage)
     demarrer()
     fonction_mur()
     gestion_mur_terrain()
@@ -852,7 +851,7 @@ unite_mouv.pack(side="left")
 frame4 = tk.Frame(frame_general, bg="dark green")
 frame4.pack()
 
-donne_vitesse = tk.Label(frame4, text='VOTRE VITESSE EST DE:', font=('Helvetica','16'), bg="dark green", fg='chartreuse3')
+donne_vitesse = tk.Label(frame4, text='CURRENT SPEED:', font=('Helvetica','16'), bg="dark green", fg='chartreuse3')
 donne_vitesse.pack(pady=15,side='left')
 
 valeur_vitesse = tk.Label(frame4, text= str(vitesse_serpent) + ' ms/mvt', font=('Helvetica','16'), bg="dark green", fg='chartreuse3')
